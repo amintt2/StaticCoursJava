@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Programmation Orientée Objet Java</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Style additionnel pour améliorer la lisibilité du code */
+        pre code {
+            display: block;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.5;
+            font-family: 'Courier New', Courier, monospace; /* Police à chasse fixe */
+        }
+        /* Couleurs pour simuler la coloration syntaxique (simplifié) */
+        .keyword { color: #4F46E5; font-weight: bold; } /* Indigo-600 */
+        .modifier { color: #4338CA; } /* Indigo-700 */
+        .type { color: #0D9488; } /* Teal-600 */
+        .class-name { color: #0F766E; font-weight: bold; } /* Teal-700 */
+        .string { color: #16A34A; } /* Green-600 */
+        .comment { color: #6B7280; font-style: italic; } /* Gray-500 */
+        .number { color: #C026D3; } /* Fuchsia-600 */
+        .method { color: #D97706; } /* Amber-600 */
+        .annotation { color: #CA8A04; } /* Yellow-600 */
+        .package { color: #64748B; } /* Slate-500 */
+        .import { color: #64748B; } /* Slate-500 */
+
+        /* Styles pour la navigation */
+        .nav-link {
+            display: block; /* Assure que chaque lien prend toute la largeur */
+            color: #374151; /* Gray-700 */
+            text-decoration: none;
+            padding: 0.25rem 0.75rem;
+            margin-bottom: 0.1rem;
+            border-radius: 0.375rem; /* rounded-md */
+            transition: all 0.2s ease-in-out;
+            font-size: 0.9rem;
+        }
+        .nav-link:hover {
+            background-color: #E5E7EB; /* Gray-200 */
+            color: #1F2937; /* Gray-800 */
+            transform: translateX(2px);
+        }
+        .nav-sublink {
+            padding-left: 1.75rem; /* Ajustement pour l'indentation */
+            font-size: 0.85rem;
+            color: #4B5563; /* Gray-600 */
+        }
+        .nav-sublink:hover {
+             background-color: #F3F4F6; /* Gray-100 */
+        }
+
+        .toc-container {
+            position: sticky;
+            top: 1rem; /* Colle au top avec un peu d'espace */
+            max-height: calc(100vh - 2rem); /* Hauteur max pour éviter dépassement */
+            overflow-y: auto; /* Scroll si nécessaire */
+        }
+
+        /* Styles pour le contenu */
+        h2 {
+            border-bottom-width: 2px;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem; /* Increased margin */
+        }
+        h3 {
+             margin-bottom: 1rem; /* Increased margin */
+             margin-top: 1.5rem; /* Add top margin */
+             color: #1F2937; /* Gray-800 */
+        }
+        h4 {
+            margin-bottom: 0.75rem; /* Increased margin */
+            color: #374151; /* Gray-700 */
+        }
+        article {
+            margin-bottom: 2rem; /* Increased margin */
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #D1D5DB; /* Gray-300 */
+        }
+         article:last-of-type {
+            border-bottom: none; /* Remove border for last article in section */
+         }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #4B5563; /* Gray-600 */
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .back-to-top:hover {
+            opacity: 1;
+        }
+        .inline-code {
+             background-color: #F3F4F6; /* gray-100 */
+             padding: 0.1em 0.4em;
+             border-radius: 0.25rem;
+             font-family: 'Courier New', Courier, monospace;
+             font-size: 0.9em;
+             color: #DC2626; /* Red-600 */
+        }
+        .summary-box {
+            background-color: #EFF6FF; /* blue-50 */
+            border-left: 4px solid #3B82F6; /* blue-500 */
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+        }
+         .summary-box strong {
+            color: #1E40AF; /* blue-800 */
+         }
+         /* Apply section-box styles to the original section elements */
+        section {
+             padding: 1.5rem; /* Increased padding */
+             border: 1px solid #E5E7EB; /* Gray-200 */
+             border-radius: 0.5rem; /* rounded-lg */
+             margin-bottom: 2rem; /* Increased margin */
+             background-color: #ffffff; /* Ensure white background */
+             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+         }
+         /* Add specific background colors per section if needed, otherwise default to white */
+         #intro { background-color: #F0F9FF; border-color: #E0F2FE;} /* sky-50 */
+         #classes { background-color: #ffffff; } /* Example: keep white */
+         #encapsulation { background-color: #FAF5FF; border-color: #F3E8FF; } /* purple-50 */
+         #communication { background-color: #F7FEE7; border-color: #ECFCCB; } /* lime-50 */
+         #methodes-objets { background-color: #F7FEE7; border-color: #ECFCCB; } /* lime-50 */
+         #surcharge { background-color: #F7FEE7; border-color: #ECFCCB; } /* lime-50 */
+         #strings { background-color: #F7FEE7; border-color: #ECFCCB; } /* lime-50 */
+         #constantes { background-color: #FAF5FF; border-color: #F3E8FF; } /* purple-50 */
+         #static { background-color: #FAF5FF; border-color: #F3E8FF; } /* purple-50 */
+         #heritage { background-color: #EEF2FF; border-color: #E0E7FF; } /* indigo-50 */
+
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+<!-- Use flex layout for sidebar and main content -->
+<div class="flex flex-col md:flex-row container mx-auto p-6 gap-8 max-w-screen-xl">
+
+    <!-- Table of Contents Sidebar -->
+    <aside class="w-full md:w-1/4 lg:w-1/5 mb-8 md:mb-0">
+        <div class="toc-container bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+             <h2 class="text-xl font-semibold mb-3 text-blue-700 border-b pb-2">Navigation</h2>
+             <nav>
+                 <ol class="space-y-1">
+                     <!-- Simplified TOC text -->
+                    <li><a href="#intro" class="nav-link">1. Intro POO</a></li>
+                    <li><a href="#classes" class="nav-link">2. Classes/Objets</a></li>
+                    <li><a href="#encapsulation" class="nav-link">3. Encapsulation</a></li>
+                    <li><a href="#communication" class="nav-link">4. Communication</a></li>
+                    <li><a href="#methodes-objets" class="nav-link">5. Méthodes & Objets</a></li>
+                    <li><a href="#surcharge" class="nav-link">6. Surcharge</a></li>
+                    <li><a href="#strings" class="nav-link">7. Strings</a></li>
+                    <li><a href="#constantes" class="nav-link">8. Constantes final</a></li>
+                    <li><a href="#static" class="nav-link">9. Membres static</a></li>
+                    <li><a href="#heritage" class="nav-link">10. Héritage</a>
+                        <ul class="mt-1 space-y-1">
+                            <li><a href="#heritage-motivation" class="nav-link nav-sublink">10.1 Motivation</a></li>
+                            <li><a href="#heritage-solution" class="nav-link nav-sublink">10.2 Solution</a></li>
+                            <li><a href="#heritage-structure" class="nav-link nav-sublink">10.3 Structure</a></li>
+                            <li><a href="#heritage-caracteristiques" class="nav-link nav-sublink">10.4 Caractéristiques</a></li>
+                             <li><a href="#heritage-vocabulaire" class="nav-link nav-sublink">10.5 Vocabulaire</a></li>
+                             <li><a href="#heritage-interets" class="nav-link nav-sublink">10.6 Intérêts</a></li>
+                             <li><a href="#heritage-regles" class="nav-link nav-sublink">10.7 Règles Java</a></li>
+                             <li><a href="#heritage-final" class="nav-link nav-sublink">10.8 Classe final</a></li>
+                            <li><a href="#heritage-creation" class="nav-link nav-sublink">10.9 Création Objets</a></li>
+                            <li><a href="#heritage-methodes" class="nav-link nav-sublink">10.10 Invocation Méthodes</a></li>
+                            <li><a href="#heritage-protected" class="nav-link nav-sublink">10.11 Accès Protégé</a></li>
+                        </ul>
+                    </li>
+                 </ol>
+             </nav>
+         </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="w-full md:w-3/4 lg:w-4/5">
+        <header class="border-b pb-6 mb-8 bg-white p-6 rounded-lg shadow-sm border-gray-200" id="top">
+             <h1 class="text-4xl font-bold text-gray-800">Programmation Orientée Objet en Java</h1>
+             <p class="text-xl text-gray-600 mt-2">Concepts Fondamentaux et Héritage</p>
+             <!-- Original TOC removed from header -->
+        </header>
+
+        <!-- SECTION 1: INTRODUCTION - REPLACED CONTENT -->
+        <section id="intro">
+             <h2 class="text-2xl font-semibold text-sky-700 border-sky-300">
+                 1. Introduction à la POO
+                 <a href="#top" class="float-right text-sm text-sky-600 hover:text-sky-800 font-normal">↑ Haut</a>
+             </h2>
+
+             <article>
+                 <h3 class="text-xl font-semibold">Qu'est-ce que la POO ?</h3>
+                 <p class="text-gray-700 mb-3">
+                     La Programmation Orientée Objet (POO) est une manière de concevoir et d'écrire des programmes informatiques. Plutôt que de se concentrer sur une liste d'instructions à exécuter (approche procédurale), la POO modélise des problèmes en termes d'<strong class="text-blue-600">objets</strong>.
+                 </p>
+                 <p class="text-gray-700 mb-2">
+                     Imaginez le monde réel : il est composé d'objets (une voiture, une personne, un compte bancaire). Chaque objet a :
+                 </p>
+                 <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 mb-3">
+                     <li>Des <strong class="text-green-600">caractéristiques</strong> (des données, des états) : une voiture a une couleur, une vitesse ; une personne a un nom, un âge. En POO, on appelle cela des <strong class="text-green-600">attributs</strong> (ou variables d'instance, champs).</li>
+                     <li>Des <strong class="text-purple-600">comportements</strong> (des actions) : une voiture peut démarrer, accélérer ; une personne peut parler, marcher. En POO, on appelle cela des <strong class="text-purple-600">méthodes</strong>.</li>
+                 </ul>
+                 <p class="text-gray-700 mb-2">
+                     La POO consiste à définir des "moules" ou "plans" (appelés <strong class="text-teal-600">classes</strong>) pour créer ces objets, et à faire interagir ces objets entre eux pour accomplir une tâche.
+                 </p>
+
+                 <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Pourquoi utiliser la POO (avec Java) ?</h4>
+                 <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                     <li><strong>Modélisation intuitive :</strong> Plus proche de la façon dont nous percevons et interagissons avec le monde réel.</li>
+                     <li><strong>Réutilisabilité :</strong> Une classe bien conçue (ex: une classe <code class="class-name">Date</code>, <code class="class-name">Utilisateur</code>) peut être réutilisée dans différents projets sans la réécrire.</li>
+                     <li><strong>Modularité :</strong> Le code est naturellement organisé en unités logiques et autonomes (les classes), ce qui facilite la compréhension, le découpage du travail en équipe et la maintenance.</li>
+                     <li><strong>Maintenance facilitée :</strong> Modifier le fonctionnement interne d'une classe (son implémentation) a moins de chances d'impacter le reste du programme, surtout si son "interface" publique (ses méthodes publiques) ne change pas (principe d'encapsulation).</li>
+                     <li><strong>Extensibilité :</strong> Il est relativement facile d'ajouter de nouvelles fonctionnalités en créant de nouvelles classes qui interagissent avec les anciennes ou en étendant des classes existantes pour les spécialiser (principe d'héritage).</li>
+                 </ul>
+
+                  <div class="summary-box">
+                     <strong>En bref :</strong> La POO structure le code autour d'<strong>objets</strong>, qui combinent <strong>données (attributs)</strong> et <strong>comportements (méthodes)</strong>. Une <strong>classe</strong> est le plan pour créer ces objets. Java est un langage fortement orienté objet, rendant ces concepts centraux.
+                 </div>
+             </article>
+         </section>
+         <!-- END SECTION 1 -->
+
+        <section class="mb-8 p-4 border rounded-lg bg-lime-50" id="communication">
+            <h2 class="text-2xl font-semibold text-lime-800 mb-4 border-b pb-2">
+                Cours 2: Interactions entre Objets et Méthodes Avancées
+                <a href="#top" class="float-right text-sm text-lime-600 hover:text-lime-800 font-normal">↑ Haut</a>
+            </h2>
+
+            <article>
+                <h3 class="text-xl font-semibold">Passer des Objets en Paramètres</h3>
+                <p class="text-gray-700 mb-3">
+                    Les objets interagissent en s'appelant mutuellement leurs méthodes. Souvent, une méthode d'un objet a besoin d'informations provenant d'un autre objet ou doit agir sur un autre objet. Pour cela, on passe une <strong class="text-red-600">référence</strong> vers cet autre objet en paramètre de la méthode.
+                </p>
+                <p class="text-gray-700 mb-2">
+                    Reprenons notre classe <code class="class-name">PointPlan</code>. Comment vérifier si deux points sont identiques ? On peut ajouter une méthode <code class="method">estEgalA</code> à <code class="class-name">PointPlan</code> qui prend un *autre* <code class="class-name">PointPlan</code> en paramètre.
+                </p>
+                <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="comment">// Ajout dans la classe PointPlan (vue précédemment)</span>
+
+<span class="comment">/**
+ * Compare ce point (l'objet courant, 'this') avec un autre point.
+ * @param autrePoint La référence vers l'autre objet PointPlan à comparer.
+ * @return true si les coordonnées (abscisse et ordonnée) sont identiques, false sinon.
+ */</span>
+<span class="modifier">public</span> <span class="type">boolean</span> <span class="method">estEgalA</span>(<span class="class-name">PointPlan</span> autrePoint) {
+    <span class="comment">// Vérification importante : si l'autre référence est null, ils ne sont pas égaux.</span>
+    <span class="keyword">if</span> (autrePoint == <span class="keyword">null</span>) {
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+    <span class="comment">// 'this.abscisse' : abscisse de l'objet sur lequel on appelle la méthode (ex: p1)</span>
+    <span class="comment">// 'autrePoint.abscisse' : abscisse de l'objet passé en argument (ex: p2 ou p3)</span>
+    <span class="type">boolean</span> memeAbscisse = (<span class="keyword">this</span>.abscisse == autrePoint.abscisse);
+    <span class="type">boolean</span> memeOrdonnee = (<span class="keyword">this</span>.ordonnee == autrePoint.ordonnee);
+
+    <span class="keyword">return</span> (memeAbscisse && memeOrdonnee);
+}
+
+<span class="comment">// Ajout de Getters pour l'exemple suivant (bonne pratique d'encapsulation)</span>
+<span class="modifier">public</span> <span class="type">float</span> <span class="method">getAbscisse</span>() { <span class="keyword">return</span> <span class="keyword">this</span>.abscisse; }
+<span class="modifier">public</span> <span class="type">float</span> <span class="method">getOrdonnee</span>() { <span class="keyword">return</span> <span class="keyword">this</span>.ordonnee; }
+
+<span class="comment">// Fin des ajouts dans PointPlan</span>
+                </code></pre>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Ailleurs, dans une méthode main par exemple...</span>
+<span class="class-name">PointPlan</span> p1 = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">4.0f</span>, <span class="number">5.0f</span>);
+<span class="class-name">PointPlan</span> p2 = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">8.0f</span>, <span class="number">9.0f</span>);
+<span class="class-name">PointPlan</span> p3 = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">4.0f</span>, <span class="number">5.0f</span>);
+<span class="class-name">PointPlan</span> p4 = p1; <span class="comment">// p4 référence le même objet que p1</span>
+
+<span class="comment">// On appelle la méthode estEgalA sur l'instance p1,</span>
+<span class="comment">// en lui passant une référence vers un autre PointPlan.</span>
+
+<span class="type">boolean</span> test1 = p1.<span class="method">estEgalA</span>(p2); <span class="comment">// Appel sur p1, compare avec p2</span>
+System.<span class="keyword">out</span>.println(<span class="string">"p1 égal à p2 ? "</span> + test1); <span class="comment">// -> false</span>
+
+<span class="type">boolean</span> test2 = p1.<span class="method">estEgalA</span>(p3); <span class="comment">// Appel sur p1, compare avec p3</span>
+System.<span class="keyword">out</span>.println(<span class="string">"p1 égal à p3 ? "</span> + test2); <span class="comment">// -> true (même contenu)</span>
+
+<span class="type">boolean</span> test3 = p1.<span class="method">estEgalA</span>(p4); <span class="comment">// Appel sur p1, compare avec p4 (lui-même)</span>
+System.<span class="keyword">out</span>.println(<span class="string">"p1 égal à p4 ? "</span> + test3); <span class="comment">// -> true</span>
+
+<span class="type">boolean</span> test4 = p1.<span class="method">estEgalA</span>(<span class="keyword">null</span>); <span class="comment">// Appel sur p1, compare avec null</span>
+System.<span class="keyword">out</span>.println(<span class="string">"p1 égal à null ? "</span> + test4); <span class="comment">// -> false</span>
+
+<span class="comment">// Attention à la différence entre == et .equals() ou notre estEgalA()</span>
+System.<span class="keyword">out</span>.println(<span class="string">"p1 == p2 ? "</span> + (p1 == p2)); <span class="comment">// -> false (références différentes)</span>
+System.<span class="keyword">out</span>.println(<span class="string">"p1 == p3 ? "</span> + (p1 == p3)); <span class="comment">// -> false (références différentes, même si contenu égal)</span>
+System.<span class="keyword">out</span>.println(<span class="string">"p1 == p4 ? "</span> + (p1 == p4)); <span class="comment">// -> true (mêmes références)</span>
+                </code></pre>
+                 <p class="text-gray-700 mt-4 mb-2">
+                    Dans la méthode <code class="method">estEgalA</code> :
+                </p>
+                 <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                     <li><code class="keyword">this</code> fait référence à l'objet sur lequel la méthode est appelée (l'objet "courant", par exemple <code class="inline-code">p1</code> dans <code class="inline-code">p1.estEgalA(...)</code>).</li>
+                     <li><code class="inline-code">autrePoint</code> est la variable locale qui contient la référence de l'objet passé en argument (par exemple <code class="inline-code">p2</code> ou <code class="inline-code">p3</code>).</li>
+                     <li>On peut accéder aux attributs de l'objet courant via <code class="keyword">this.attribut</code> (ou juste <code class="inline-code">attribut</code> si pas d'ambiguïté) et aux attributs de l'objet passé en paramètre via <code class="inline-code">nomParametre.attribut</code>. <strong class="text-red-600">Important :</strong> Une classe peut accéder aux membres <code class="modifier">private</code> de <strong class="italic">toutes</strong> les instances de cette même classe, pas seulement de l'instance courante (<code class="keyword">this</code>). C'est pourquoi <code class="inline-code">autrePoint.abscisse</code> est valide même si <code class="inline-code">abscisse</code> est <code class="modifier">private</code>.</li>
+                 </ul>
+                 <div class="summary-box mt-4">
+                     <strong>Points clés :</strong>
+                     <ul class="list-disc list-inside text-sm ml-4 mt-1">
+                         <li>On passe des <strong>références</strong> d'objets en paramètres des méthodes pour leur permettre d'interagir.</li>
+                         <li>À l'intérieur d'une méthode d'instance, <code class="keyword">this</code> désigne l'objet courant.</li>
+                         <li>Une classe a accès aux membres <code class="modifier">private</code> de toutes les instances de cette même classe.</li>
+                         <li>Ne pas confondre la comparaison de références (<code class="inline-code">==</code>) et la comparaison de contenu (<code class="method">.equals()</code> ou méthode personnalisée comme <code class="method">estEgalA</code>).</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+
+        <section class="mb-8 p-4 border rounded-lg bg-lime-50" id="methodes-objets">
+            <h2 class="text-2xl font-semibold text-lime-800 mb-4 border-b pb-2">
+                Cours 3: Méthodes Retournant des Objets et Surcharge
+                <a href="#top" class="float-right text-sm text-lime-600 hover:text-lime-800 font-normal">↑ Haut</a>
+            </h2>
+
+            <article>
+                <h3 class="text-xl font-semibold">Créer et Retourner de Nouveaux Objets</h3>
+                <p class="text-gray-700 mb-3">
+                    Tout comme une méthode peut prendre des objets en paramètres, elle peut aussi en <strong class="text-blue-600">retourner</strong>. Le type de retour de la méthode est alors simplement le nom de la classe de l'objet qui sera retourné. La méthode retourne en fait une <strong class="text-red-600">référence</strong> vers l'objet (qui a souvent été créé à l'intérieur de la méthode).
+                </p>
+                <p class="text-gray-700 mb-2">
+                    Cela est très utile pour les méthodes qui calculent ou construisent un nouvel objet basé sur l'état de l'objet courant ou sur les paramètres reçus.
+                </p>
+                <p class="text-gray-700 mb-2">
+                    Exemple : Ajoutons une méthode <code class="method">milieu</code> à notre classe <code class="class-name">PointPlan</code> qui calcule et retourne un *nouveau* point situé à mi-chemin entre le point courant (<code class="keyword">this</code>) et un autre point passé en paramètre.
+                </p>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="comment">// Ajout dans la classe PointPlan</span>
+
+<span class="comment">/**
+ * Calcule le point milieu entre ce point (this) et un autre point.
+ * @param autrePoint La référence vers l'autre objet PointPlan.
+ * @return Une référence vers un *nouvel* objet PointPlan représentant le milieu,
+ *         ou null si autrePoint est null.
+ */</span>
+<span class="modifier">public</span> <span class="class-name">PointPlan</span> <span class="method">milieu</span>(<span class="class-name">PointPlan</span> autrePoint) {
+    <span class="keyword">if</span> (autrePoint == <span class="keyword">null</span>) {
+        <span class="keyword">return</span> <span class="keyword">null</span>; <span class="comment">// On retourne une référence nulle si l'entrée est invalide</span>
+    }
+
+    <span class="comment">// Calcul des coordonnées du point milieu</span>
+    <span class="type">float</span> milieuX = (<span class="keyword">this</span>.abscisse + autrePoint.abscisse) / <span class="number">2.0f</span>;
+    <span class="type">float</span> milieuY = (<span class="keyword">this</span>.ordonnee + autrePoint.ordonnee) / <span class="number">2.0f</span>;
+
+    <span class="comment">// Création d'un *nouvel* objet PointPlan avec ces coordonnées</span>
+    <span class="class-name">PointPlan</span> pointMilieu = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(milieuX, milieuY);
+
+    <span class="comment">// Retourne la référence vers ce nouvel objet</span>
+    <span class="keyword">return</span> pointMilieu;
+}
+
+<span class="comment">// Variante plus concise (création et return en une ligne)</span>
+<span class="modifier">public</span> <span class="class-name">PointPlan</span> <span class="method">symetriqueOrigine</span>() {
+    <span class="comment">// Retourne un nouveau point symétrique par rapport à (0,0)</span>
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="class-name">PointPlan</span>(-<span class="keyword">this</span>.abscisse, -<span class="keyword">this</span>.ordonnee);
+}
+
+<span class="comment">// Fin des ajouts dans PointPlan</span>
+                 </code></pre>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Ailleurs, dans une méthode main par exemple...</span>
+<span class="class-name">PointPlan</span> pA = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">2.0f</span>, <span class="number">4.0f</span>);
+<span class="class-name">PointPlan</span> pB = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">8.0f</span>, <span class="number">10.0f</span>);
+
+<span class="comment">// Appel de la méthode milieu() sur pA, en passant pB</span>
+<span class="comment">// La méthode retourne une référence vers un nouvel objet PointPlan</span>
+<span class="class-name">PointPlan</span> pMilieu = pA.<span class="method">milieu</span>(pB);
+
+<span class="comment">// pMilieu contient maintenant la référence du nouveau point (5.0, 7.0)</span>
+<span class="keyword">if</span> (pMilieu != <span class="keyword">null</span>) {
+    System.<span class="keyword">out</span>.print(<span class="string">"Le milieu entre pA et pB est : "</span>);
+    pMilieu.<span class="method">afficher</span>(); <span class="comment">// -> Point (5.0, 7.0)</span>
+}
+
+<span class="comment">// Vérifions que pA et pB n'ont pas été modifiés</span>
+pA.<span class="method">afficher</span>(); <span class="comment">// -> Point (2.0, 4.0) (inchangé)</span>
+pB.<span class="method">afficher</span>(); <span class="comment">// -> Point (8.0, 10.0) (inchangé)</span>
+
+<span class="comment">// Appel de symetriqueOrigine() sur pA</span>
+<span class="class-name">PointPlan</span> pSym = pA.<span class="method">symetriqueOrigine</span>();
+System.<span class="keyword">out</span>.print(<span class="string">"Le symétrique de pA par rapport à l'origine est : "</span>);
+pSym.<span class="method">afficher</span>(); <span class="comment">// -> Point (-2.0, -4.0)</span>
+                 </code></pre>
+                 <p class="text-gray-700 mt-4 mb-2">
+                    Ce mécanisme est fondamental pour créer des méthodes qui produisent des résultats complexes (plus qu'un simple type primitif) sans modifier les objets d'origine (c'est souvent une bonne pratique de ne pas modifier les objets passés en paramètres si ce n'est pas explicitement le but de la méthode).
+                </p>
+                 <div class="summary-box mt-4">
+                     <strong>Points clés :</strong>
+                      <ul class="list-disc list-inside text-sm ml-4 mt-1">
+                         <li>Une méthode peut déclarer une classe comme type de retour.</li>
+                         <li>Elle retourne alors une <strong>référence</strong> vers une instance de cette classe.</li>
+                         <li>Souvent, l'instance retournée est créée à l'intérieur de la méthode avec <code class="keyword">new</code>.</li>
+                         <li>Permet de construire des objets complexes ou de retourner plusieurs valeurs groupées dans un objet.</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+
+        <section class="mb-8 p-4 border rounded-lg bg-lime-50" id="surcharge">
+            <h2 class="text-2xl font-semibold text-lime-800 mb-4 border-b pb-2">
+                Cours 4: Surcharge de Méthodes/Constructeurs (Overloading)
+                <a href="#top" class="float-right text-sm text-lime-600 hover:text-lime-800 font-normal">↑ Haut</a>
+            </h2>
+
+            <article>
+                <h3 class="text-xl font-semibold">Définir Plusieurs Comportements pour un Même Nom</h3>
+                <p class="text-gray-700 mb-3">
+                    La surcharge (<span class="italic">Overloading</span> en anglais) permet de définir, <strong class="text-red-600">dans la même classe</strong>, plusieurs méthodes (ou plusieurs constructeurs) qui portent <strong class="text-red-600">exactement le même nom</strong>.
+                </p>
+                <p class="text-gray-700 mb-2">
+                    Comment Java fait-il la différence lors d'un appel ? Grâce à la <strong class="text-blue-600">signature</strong> de la méthode, qui inclut :
+                </p>
+                 <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 mb-3">
+                    <li>Le nom de la méthode.</li>
+                    <li>Le <strong class="text-blue-600">nombre</strong>, le <strong class="text-blue-600">type</strong> et/ou l'<strong class="text-blue-600">ordre</strong> des paramètres.</li>
+                </ul>
+                 <p class="text-gray-700 mb-2">
+                    <strong class="text-red-600">Attention :</strong> Le type de retour seul ne suffit <strong class="italic">pas</strong> à différencier deux méthodes surchargées.
+                </p>
+
+                <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Exemple de Surcharge de Constructeurs</h4>
+                <p class="text-gray-700 mb-2">
+                    On peut vouloir offrir plusieurs façons de créer un objet <code class="class-name">PointPlan</code> :
+                </p>
+                 <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 mb-3">
+                    <li>En spécifiant les deux coordonnées.</li>
+                    <li>En ne spécifiant rien (crée un point à l'origine par défaut).</li>
+                    <li>En spécifiant une seule coordonnée (l'autre valant 0 par défaut).</li>
+                 </ul>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="comment">// Dans la classe PointPlan</span>
+
+<span class="comment">// Constructeur 1 : Principal (déjà vu)</span>
+<span class="modifier">public</span> <span class="method">PointPlan</span>(<span class="type">float</span> x, <span class="type">float</span> y) {
+    System.<span class="keyword">out</span>.println(<span class="string">" Appel Constructeur(float, float) "</span>);
+    <span class="keyword">this</span>.abscisse = x;
+    <span class="keyword">this</span>.ordonnee = y;
+}
+
+<span class="comment">// Constructeur 2 (surchargé) : Point à l'origine (0,0)</span>
+<span class="comment">// Pas de paramètres</span>
+<span class="modifier">public</span> <span class="method">PointPlan</span>() {
+    <span class="comment">// Appel un *autre* constructeur de la *même* classe ('this')</span>
+    <span class="comment">// 'this(...)' doit être la TOUTE PREMIERE instruction du constructeur.</span>
+    <span class="keyword">this</span>(<span class="number">0.0f</span>, <span class="number">0.0f</span>); <span class="comment">// Appelle PointPlan(float, float) avec (0,0)</span>
+    System.<span class="keyword">out</span>.println(<span class="string">" Appel Constructeur() "</span>); <span class="comment">// S'exécute *après* l'appel à this(0,0)</span>
+}
+
+<span class="comment">// Constructeur 3 (surchargé) : Point sur l'axe X (y=0)</span>
+<span class="comment">// Un seul paramètre de type float</span>
+<span class="modifier">public</span> <span class="method">PointPlan</span>(<span class="type">float</span> x) {
+    <span class="keyword">this</span>(x, <span class="number">0.0f</span>); <span class="comment">// Appelle PointPlan(float, float) avec (x, 0)</span>
+    System.<span class="keyword">out</span>.println(<span class="string">" Appel Constructeur(float) "</span>);
+}
+
+<span class="comment">// Erreur : On ne peut pas surcharger QUE sur le type de retour</span>
+<span class="comment">// public int PointPlan(float x) { ... } // Illégal!</span>
+
+<span class="comment">// Fin des ajouts dans PointPlan</span>
+                 </code></pre>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Ailleurs, dans une méthode main...</span>
+System.<span class="keyword">out</span>.println(<span class="string">"Création pA:"</span>);
+<span class="class-name">PointPlan</span> pA = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">1.0f</span>, <span class="number">2.0f</span>); <span class="comment">// Appelle Constructeur 1</span>
+pA.<span class="method">afficher</span>(); <span class="comment">// -> Point (1.0, 2.0)</span>
+<span class="comment">// Output:</span>
+<span class="comment">// Création pA:</span>
+<span class="comment">//  Appel Constructeur(float, float)</span>
+
+System.<span class="keyword">out</span>.println(<span class="string">"
+Création pB:"</span>);
+<span class="class-name">PointPlan</span> pB = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(); <span class="comment">// Appelle Constructeur 2 (sans arguments)</span>
+pB.<span class="method">afficher</span>(); <span class="comment">// -> Point (0.0, 0.0)</span>
+<span class="comment">// Output:</span>
+<span class="comment">// Création pB:</span>
+<span class="comment">//  Appel Constructeur(float, float)</span>
+<span class="comment">//  Appel Constructeur()</span>
+
+System.<span class="keyword">out</span>.println(<span class="string">"
+Création pC:"</span>);
+<span class="class-name">PointPlan</span> pC = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">5.0f</span>); <span class="comment">// Appelle Constructeur 3 (un float)</span>
+pC.<span class="method">afficher</span>(); <span class="comment">// -> Point (5.0, 0.0)</span>
+<span class="comment">// Output:</span>
+<span class="comment">// Création pC:</span>
+<span class="comment">//  Appel Constructeur(float, float)</span>
+<span class="comment">//  Appel Constructeur(float)</span>
+                 </code></pre>
+
+                 <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Exemple de Surcharge de Méthodes</h4>
+                 <p class="text-gray-700 mb-2">
+                    On peut aussi surcharger des méthodes ordinaires. Par exemple, plusieurs façons d'afficher un point :
+                 </p>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="comment">// Dans la classe PointPlan</span>
+
+<span class="comment">// Méthode 1 : Affichage simple (déjà vue)</span>
+<span class="modifier">public</span> <span class="type">void</span> <span class="method">afficher</span>() {
+    System.<span class="keyword">out</span>.println(<span class="string">"Point ("</span> + <span class="keyword">this</span>.abscisse + <span class="string">", "</span> + <span class="keyword">this</span>.ordonnee + <span class="string">")"</span>);
+}
+
+<span class="comment">// Méthode 2 (surchargée) : Affichage avec un préfixe</span>
+<span class="comment">// Même nom, mais un paramètre String en plus</span>
+<span class="modifier">public</span> <span class="type">void</span> <span class="method">afficher</span>(<span class="type">String</span> prefixe) {
+    System.<span class="keyword">out</span>.print(prefixe + <span class="string">" "</span>);
+    <span class="keyword">this</span>.<span class="method">afficher</span>(); <span class="comment">// Appel l'autre méthode afficher() de la même classe</span>
+}
+
+<span class="comment">// Méthode 3 (surchargée) : Affichage formaté différemment</span>
+<span class="comment">// Même nom, mais un paramètre boolean en plus</span>
+<span class="modifier">public</span> <span class="type">void</span> <span class="method">afficher</span>(<span class="type">boolean</span> formatCourt) {
+    <span class="keyword">if</span> (formatCourt) {
+        System.<span class="keyword">out</span>.println(<span class="string">"["</span> + <span class="keyword">this</span>.abscisse + <span class="string">";"</span> + <span class="keyword">this</span>.ordonnee + <span class="string">"]"</span>);
+    } <span class="keyword">else</span> {
+        <span class="keyword">this</span>.<span class="method">afficher</span>(); <span class="comment">// Appel la version sans argument</span>
+    }
+}
+                 </code></pre>
+                  <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Ailleurs, dans une méthode main...</span>
+<span class="class-name">PointPlan</span> p = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">3f</span>, <span class="number">7f</span>);
+
+p.<span class="method">afficher</span>(); <span class="comment">// Appelle afficher() -> Point (3.0, 7.0)</span>
+p.<span class="method">afficher</span>(<span class="string">"Coordonnées:"</span>); <span class="comment">// Appelle afficher(String) -> Coordonnées: Point (3.0, 7.0)</span>
+p.<span class="method">afficher</span>(<span class="keyword">true</span>); <span class="comment">// Appelle afficher(boolean) -> [3.0;7.0]</span>
+p.<span class="method">afficher</span>(<span class="keyword">false</span>); <span class="comment">// Appelle afficher(boolean) qui appelle afficher() -> Point (3.0, 7.0)</span>
+                  </code></pre>
+                 <p class="text-gray-700 mt-4">
+                    La surcharge rend les classes plus flexibles et expressives en permettant d'utiliser le même nom logique pour des opérations similaires mais avec des variations dans les entrées ou le comportement.
+                 </p>
+                  <div class="summary-box mt-4">
+                    <strong>Points clés :</strong>
+                    <ul class="list-disc list-inside text-sm ml-4 mt-1">
+                         <li><strong>Surcharge (Overloading) :</strong> Plusieurs méthodes/constructeurs avec le <strong class="text-red-600">même nom</strong> dans la <strong class="text-red-600">même classe</strong>.</li>
+                         <li>Distinction par la <strong class="text-blue-600">signature</strong> (nombre, type, ordre des paramètres).</li>
+                         <li>Le type de retour <strong class="text-red-600">ne compte pas</strong> pour la surcharge.</li>
+                         <li>Utile pour offrir plusieurs façons de créer un objet (constructeurs) ou d'effectuer une action (méthodes).</li>
+                         <li>Appel d'un autre constructeur de la même classe : <code class="keyword">this(...)</code> (doit être la 1ère instruction).</li>
+                         <li>Appel d'une autre méthode de la même classe : <code class="keyword">this.methode(...)</code> ou juste <code class="method">methode(...)</code>.</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+
+        <section class="mb-8 p-4 border rounded-lg bg-lime-50" id="strings">
+            <h2 class="text-2xl font-semibold text-lime-800 mb-4 border-b pb-2">
+                Cours 5: Chaînes de Caractères (String)
+                <a href="#top" class="float-right text-sm text-lime-600 hover:text-lime-800 font-normal">↑ Haut</a>
+            </h2>
+             <article>
+                 <h3 class="text-xl font-semibold">Les Chaînes sont des Objets Immuables</h3>
+                 <p class="text-gray-700 mb-3">
+                    En Java, les chaînes de caractères ne sont pas des types primitifs comme <code class="type">int</code> ou <code class="type">boolean</code>. Ce sont des <strong class="text-blue-600">objets</strong> de la classe <code class="class-name">String</code> (qui fait partie du package <code class="package">java.lang</code>, importé automatiquement).
+                 </p>
+                 <p class="text-gray-700 mb-2">
+                    Une caractéristique fondamentale et <strong class="text-red-600">extrêmement importante</strong> des objets <code class="class-name">String</code> est leur <strong class="text-red-600">immuabilité</strong>. Une fois qu'un objet <code class="class-name">String</code> est créé, son contenu (la séquence de caractères) <strong class="text-red-600">ne peut plus jamais être modifié</strong>.
+                 </p>
+                  <p class="text-gray-700 mb-2">
+                    Toute opération qui *semble* modifier une chaîne (comme la concaténation avec <code class="inline-code">+</code> ou des méthodes comme <code class="method">toUpperCase()</code>, <code class="method">replace()</code>, <code class="method">substring()</code>) crée et retourne en réalité un <strong class="italic">nouvel</strong> objet <code class="class-name">String</code> avec le résultat, laissant l'original intact.
+                </p>
+
+                <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Création et Concaténation</h4>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="comment">// Création simple (la plus courante)</span>
+<span class="type">String</span> salutation = <span class="string">"Bonjour"</span>;
+
+<span class="comment">// Création explicite (moins courant, mais montre que c'est un objet)</span>
+<span class="type">String</span> nom = <span class="keyword">new</span> <span class="type">String</span>(<span class="string">"Monde"</span>);
+
+<span class="comment">// Concaténation avec l'opérateur '+'</span>
+<span class="type">String</span> message = salutation + <span class="string">" "</span> + nom + <span class="string">"!"</span>; <span class="comment">// Crée un *nouveau* String: "Bonjour Monde!"</span>
+System.<span class="keyword">out</span>.println(message);
+
+<span class="comment">// L'original 'salutation' n'a PAS changé</span>
+System.<span class="keyword">out</span>.println(salutation); <span class="comment">// -> "Bonjour"</span>
+
+<span class="comment">// Exemple d'immuabilité avec une méthode</span>
+<span class="type">String</span> minuscule = <span class="string">"java"</span>;
+<span class="type">String</span> majuscule = minuscule.<span class="method">toUpperCase</span>(); <span class="comment">// Crée un *nouveau* String: "JAVA"</span>
+
+System.<span class="keyword">out</span>.println(minuscule); <span class="comment">// -> "java" (inchangé)</span>
+System.<span class="keyword">out</span>.println(majuscule); <span class="comment">// -> "JAVA" (le nouveau String)</span>
+
+<span class="comment">// Si on veut "modifier" la variable, il faut réaffecter la référence:</span>
+minuscule = minuscule.<span class="method">toUpperCase</span>(); <span class="comment">// 'minuscule' référence maintenant le nouvel objet "JAVA"</span>
+System.<span class="keyword">out</span>.println(minuscule); <span class="comment">// -> "JAVA"</span>
+                 </code></pre>
+
+                <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Comparaison : <code class="inline-code">==</code> vs <code class="method">.equals()</code></h4>
+                 <p class="text-gray-700 mb-2">
+                    C'est une source d'erreur fréquente !
+                 </p>
+                 <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 mb-3">
+                    <li>L'opérateur <code class="inline-code">==</code> compare les <strong class="text-red-600">références</strong> (les adresses mémoire). Il vérifie si deux variables pointent vers le <strong class="italic">même objet</strong> en mémoire.</li>
+                    <li>La méthode <code class="method">.equals()</code> (héritée de <code class="class-name">Object</code> et redéfinie par <code class="class-name">String</code>) compare le <strong class="text-green-600">contenu</strong> des chaînes, caractère par caractère.</li>
+                 </ul>
+                  <p class="text-gray-700 mb-2">
+                    <strong class="text-red-600">Règle d'or :</strong> Pour comparer le contenu de deux chaînes, utilisez <strong class="text-red-600">TOUJOURS</strong> la méthode <code class="method">.equals()</code> (ou <code class="method">.equalsIgnoreCase()</code> pour ignorer la casse). N'utilisez <strong class="text-red-600">JAMAIS</strong> <code class="inline-code">==</code> pour cela.
+                 </p>
+                  <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="type">String</span> s1 = <span class="string">"test"</span>; <span class="comment">// Littéral</span>
+<span class="type">String</span> s2 = <span class="string">"test"</span>; <span class="comment">// Littéral identique</span>
+<span class="type">String</span> s3 = <span class="keyword">new</span> <span class="type">String</span>(<span class="string">"test"</span>); <span class="comment">// Nouvel objet explicite</span>
+<span class="type">String</span> s4 = <span class="keyword">new</span> <span class="type">String</span>(<span class="string">"test"</span>); <span class="comment">// Autre nouvel objet explicite</span>
+<span class="type">String</span> s5 = <span class="string">"Test"</span>; <span class="comment">// Casse différente</span>
+
+<span class="comment">// Comparaison de contenu (LA BONNE FAÇON)</span>
+System.<span class="keyword">out</span>.println(<span class="string">"s1 equals s2 ? "</span> + s1.<span class="method">equals</span>(s2)); <span class="comment">// -> true</span>
+System.<span class="keyword">out</span>.println(<span class="string">"s1 equals s3 ? "</span> + s1.<span class="method">equals</span>(s3)); <span class="comment">// -> true</span>
+System.<span class="keyword">out</span>.println(<span class="string">"s3 equals s4 ? "</span> + s3.<span class="method">equals</span>(s4)); <span class="comment">// -> true</span>
+System.<span class="keyword">out</span>.println(<span class="string">"s1 equals s5 ? "</span> + s1.<span class="method">equals</span>(s5)); <span class="comment">// -> false (casse différente)</span>
+System.<span class="keyword">out</span>.println(<span class="string">"s1 equalsIgnoreCase s5 ? "</span> + s1.<span class="method">equalsIgnoreCase</span>(s5)); <span class="comment">// -> true</span>
+
+<span class="comment">// Comparaison de références (À ÉVITER pour le contenu)</span>
+System.<span class="keyword">out</span>.println(<span class="string">"s1 == s2 ? "</span> + (s1 == s2)); <span class="comment">// -> true (souvent, car Java optimise les littéraux identiques - String Pool)</span>
+System.<span class="keyword">out</span>.println(<span class="string">"s1 == s3 ? "</span> + (s1 == s3)); <span class="comment">// -> false (s3 est un nouvel objet créé avec 'new')</span>
+System.<span class="keyword">out</span>.println(<span class="string">"s3 == s4 ? "</span> + (s3 == s4)); <span class="comment">// -> false (s3 et s4 sont deux objets distincts créés avec 'new')</span>
+                  </code></pre>
+                  <p class="text-gray-700 mb-2">
+                    Le "String Pool" est une zone mémoire où Java stocke les chaînes littérales. Si vous déclarez deux variables avec le même littéral (<code class="inline-code">s1</code> et <code class="inline-code">s2</code>), Java peut les faire pointer vers le même objet dans le pool pour économiser de la mémoire. C'est pourquoi <code class="inline-code">s1 == s2</code> peut être <code class="keyword">true</code>. Mais il ne faut <strong class="italic">jamais</strong> compter sur ce comportement pour comparer des contenus, car dès qu'on utilise <code class="keyword">new</code> ou que les chaînes résultent d'opérations, les références seront généralement différentes.
+                  </p>
+
+                 <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">La Méthode <code class="method">toString()</code></h4>
+                  <p class="text-gray-700 mb-2">
+                     Toutes les classes en Java héritent (directement ou indirectement) de la classe <code class="class-name">Object</code>. La classe <code class="class-name">Object</code> définit une méthode <code class="method">public String toString()</code>.
+                  </p>
+                  <p class="text-gray-700 mb-2">
+                      Le but de <code class="method">toString()</code> est de fournir une représentation textuelle (un <code class="class-name">String</code>) de l'objet. La version par défaut de <code class="class-name">Object</code> n'est pas très utile (elle affiche souvent le nom de la classe et un hashcode).
+                  </p>
+                  <p class="text-gray-700 mb-2">
+                      Cette méthode est appelée <strong class="italic">automatiquement</strong> par Java dans certains contextes :
+                  </p>
+                   <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 mb-3">
+                      <li>Lorsqu'on concatène un objet avec une chaîne en utilisant <code class="inline-code">+</code>.</li>
+                      <li>Lorsqu'on passe un objet à <code class="method">System.out.println()</code>.</li>
+                  </ul>
+                   <p class="text-gray-700 mb-2">
+                      Il est <strong class="text-blue-600">fortement recommandé</strong> de <strong class="text-blue-600">redéfinir</strong> (override) la méthode <code class="method">toString()</code> dans vos propres classes pour fournir une description claire et utile de l'état de l'objet.
+                  </p>
+                   <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="comment">// Ajout dans la classe PointPlan</span>
+<span class="comment">/**
+ * Redéfinition de toString pour fournir une représentation textuelle utile.
+ * L'annotation @Override indique au compilateur notre intention de redéfinir
+ * une méthode de la classe mère (ici, Object). C'est une bonne pratique.
+ */</span>
+<span class="annotation">@Override</span>
+<span class="modifier">public</span> <span class="type">String</span> <span class="method">toString</span>() {
+    <span class="comment">// Construit et retourne une chaîne décrivant le point</span>
+    <span class="keyword">return</span> <span class="string">"PointPlan[x="</span> + <span class="keyword">this</span>.abscisse + <span class="string">", y="</span> + <span class="keyword">this</span>.ordonnee + <span class="string">"]"</span>;
+}
+
+<span class="comment">// Fin de l'ajout dans PointPlan</span>
+                   </code></pre>
+                    <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Ailleurs, dans une méthode main...</span>
+<span class="class-name">PointPlan</span> pt = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">10f</span>, <span class="number">20f</span>);
+
+<span class="comment">// Appel explicite de toString()</span>
+<span class="type">String</span> description = pt.<span class="method">toString</span>();
+System.<span class="keyword">out</span>.println(description); <span class="comment">// -> PointPlan[x=10.0, y=20.0]</span>
+
+<span class="comment">// Appel implicite de toString() par println</span>
+System.<span class="keyword">out</span>.println(pt); <span class="comment">// -> PointPlan[x=10.0, y=20.0]</span>
+
+<span class="comment">// Appel implicite de toString() par concaténation</span>
+<span class="type">String</span> info = <span class="string">"Le point est : "</span> + pt;
+System.<span class="keyword">out</span>.println(info); <span class="comment">// -> Le point est : PointPlan[x=10.0, y=20.0]</span>
+                    </code></pre>
+
+                     <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Chaînes Modifiables : <code class="class-name">StringBuilder</code> et <code class="class-name">StringBuffer</code></h4>
+                    <p class="text-gray-700 mb-2">
+                        Si vous avez besoin de construire une chaîne par étapes (par exemple, en ajoutant des éléments dans une boucle), utiliser l'opérateur <code class="inline-code">+</code> à répétition peut être inefficace car il crée de nombreux objets <code class="class-name">String</code> intermédiaires.
+                    </p>
+                     <p class="text-gray-700 mb-2">
+                        Pour ces cas, Java fournit les classes <code class="class-name">StringBuilder</code> (plus rapide, non synchronisé) et <code class="class-name">StringBuffer</code> (plus lent, synchronisé - utile en environnement multi-thread). Elles représentent des séquences de caractères <strong class="italic">modifiables</strong>.
+                    </p>
+                     <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Construction inefficace avec String et '+' dans une boucle</span>
+<span class="type">String</span> resultatInefficace = <span class="string">""</span>;
+<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i < <span class="number">10</span>; i++) {
+    resultatInefficace = resultatInefficace + i + <span class="string">" "</span>; <span class="comment">// Crée un nouvel objet String à chaque tour</span>
+}
+System.<span class="keyword">out</span>.println(resultatInefficace); <span class="comment">// -> 0 1 2 3 4 5 6 7 8 9</span>
+
+<span class="comment">// Construction efficace avec StringBuilder</span>
+<span class="class-name">StringBuilder</span> builder = <span class="keyword">new</span> <span class="class-name">StringBuilder</span>();
+<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i < <span class="number">10</span>; i++) {
+    builder.<span class="method">append</span>(i); <span class="comment">// Modifie l'objet StringBuilder existant</span>
+    builder.<span class="method">append</span>(<span class="string">" "</span>);
+}
+<span class="type">String</span> resultatEfficace = builder.<span class="method">toString</span>(); <span class="comment">// Convertit en String à la fin</span>
+System.<span class="keyword">out</span>.println(resultatEfficace); <span class="comment">// -> 0 1 2 3 4 5 6 7 8 9</span>
+                     </code></pre>
+
+                 <div class="summary-box mt-4">
+                    <strong>Points clés sur String :</strong>
+                    <ul class="list-disc list-inside text-sm ml-4 mt-1">
+                         <li>Les <code class="class-name">String</code> sont des <strong>objets</strong>.</li>
+                         <li>Ils sont <strong class="text-red-600">immuables</strong> : leur contenu ne change jamais après création.</li>
+                         <li>Les opérations comme <code class="inline-code">+</code> ou <code class="method">toUpperCase()</code> créent de <strong>nouveaux</strong> objets <code class="class-name">String</code>.</li>
+                         <li>Utilisez <strong class="text-red-600">TOUJOURS</strong> <code class="method">.equals()</code> pour comparer le contenu, <strong class="text-red-600">JAMAIS</strong> <code class="inline-code">==</code>.</li>
+                         <li>Redéfinissez <code class="method">toString()</code> dans vos classes pour une représentation textuelle utile.</li>
+                         <li>Utilisez <code class="class-name">StringBuilder</code> (ou <code class="class-name">StringBuffer</code>) pour construire des chaînes de manière efficace, surtout dans les boucles.</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+
+        <section class="mb-8 p-4 border rounded-lg bg-purple-50" id="constantes">
+            <h2 class="text-2xl font-semibold text-purple-800 mb-4 border-b pb-2">
+                Cours 6: Constantes (final)
+                <a href="#top" class="float-right text-sm text-purple-600 hover:text-purple-800 font-normal">↑ Haut</a>
+            </h2>
+             <article>
+                 <h3 class="text-xl font-semibold">Empêcher la Modification : Le Mot-Clé <code class="modifier">final</code></h3>
+                 <p class="text-gray-700 mb-3">
+                    Le mot-clé <code class="modifier">final</code> peut être appliqué à différentes entités en Java (variables, méthodes, classes) et signifie généralement "ne peut pas être modifié ou redéfini". Intéressons-nous d'abord aux <strong class="text-blue-600">variables <code class="modifier">final</code></strong>.
+                </p>
+
+                <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Variables Locales <code class="modifier">final</code></h4>
+                 <p class="text-gray-700 mb-2">
+                    Une variable locale déclarée <code class="modifier">final</code> ne peut recevoir une valeur <strong class="text-red-600">qu'une seule fois</strong>. Une fois initialisée, sa valeur (ou la référence qu'elle contient pour un objet) ne peut plus être changée.
+                </p>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="type">void</span> <span class="method">exempleLocaleFinal</span>() {
+    <span class="modifier">final</span> <span class="type">int</span> MAX_TENTATIVES = <span class="number">3</span>; <span class="comment">// Initialisée à la déclaration</span>
+    <span class="modifier">final</span> <span class="type">String</span> MESSAGE_ACCUEIL; <span class="comment">// Déclarée mais pas encore initialisée</span>
+
+    System.<span class="keyword">out</span>.println(<span class="string">"Nombre max de tentatives: "</span> + MAX_TENTATIVES);
+    <span class="comment">// MAX_TENTATIVES = 4; // ERREUR de compilation! Variable final déjà assignée.</span>
+
+    MESSAGE_ACCUEIL = <span class="string">"Bienvenue!"</span>; <span class="comment">// Première (et seule) initialisation possible</span>
+    System.<span class="keyword">out</span>.println(MESSAGE_ACCUEIL);
+
+    <span class="comment">// MESSAGE_ACCUEIL = "Hello!"; // ERREUR de compilation! Variable final déjà assignée.</span>
+
+    <span class="modifier">final</span> <span class="class-name">PointPlan</span> ORIGINE = <span class="keyword">new</span> <span class="class-name">PointPlan</span>(<span class="number">0f</span>, <span class="number">0f</span>);
+    <span class="comment">// ORIGINE = new PointPlan(1f, 1f); // ERREUR! On ne peut pas changer la *référence*</span>
+
+    <span class="comment">// MAIS on peut modifier l'objet *référencé* si l'objet lui-même est mutable!</span>
+    ORIGINE.<span class="method">translate</span>(<span class="number">5f</span>, <span class="number">5f</span>); <span class="comment">// OK! L'objet PointPlan est modifié.</span>
+    ORIGINE.<span class="method">afficher</span>(); <span class="comment">// -> Point (5.0, 5.0)</span>
+}
+                 </code></pre>
+                  <p class="text-gray-700 mb-2 mt-3">
+                     <strong class="text-red-600">Attention :</strong> Pour les objets, <code class="modifier">final</code> appliqué à la variable signifie que la <strong class="italic">référence</strong> ne peut pas changer (la variable ne peut pas pointer vers un autre objet). Cela n'empêche <strong class="italic">pas</strong> de modifier l'état interne de l'objet référencé (si cet objet a des méthodes qui le permettent, comme <code class="method">translate()</code> pour notre <code class="class-name">PointPlan</code>). Pour rendre l'objet lui-même immuable, il faut concevoir sa classe différemment (pas de setters, attributs <code class="modifier">final</code>, etc., comme pour <code class="class-name">String</code>).
+                  </p>
+
+                 <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Attributs d'Instance <code class="modifier">final</code></h4>
+                  <p class="text-gray-700 mb-2">
+                    Un attribut d'instance (variable de classe non-<code class="modifier">static</code>) déclaré <code class="modifier">final</code> doit être initialisé <strong class="text-red-600">au plus tard à la fin de l'exécution de tous les constructeurs</strong> de la classe. Une fois initialisé, il ne peut plus changer pour toute la durée de vie de l'objet.
+                  </p>
+                  <p class="text-gray-700 mb-2">
+                    On peut l'initialiser :
+                  </p>
+                   <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 mb-3">
+                      <li>Directement lors de sa déclaration.</li>
+                      <li>Dans <strong class="italic">tous</strong> les constructeurs de la classe.</li>
+                      <li>(Pour les attributs <code class="modifier">static final</code>, on peut aussi utiliser un bloc d'initialisation statique).</li>
+                   </ul>
+                   <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Message</span> {
+    <span class="modifier">private</span> <span class="modifier">final</span> <span class="type">String</span> contenu; <span class="comment">// Doit être initialisé</span>
+    <span class="modifier">private</span> <span class="modifier">final</span> <span class="type">long</span> timestamp = System.<span class="method">currentTimeMillis</span>(); <span class="comment">// Initialisé ici</span>
+    <span class="modifier">private</span> <span class="modifier">final</span> <span class="type">int</span> idMessage; <span class="comment">// Doit être initialisé dans le constructeur</span>
+
+    <span class="comment">// Constructeur 1</span>
+    <span class="modifier">public</span> <span class="method">Message</span>(<span class="type">String</span> texte, <span class="type">int</span> id) {
+        <span class="keyword">this</span>.contenu = texte; <span class="comment">// Initialisation de 'contenu' (final)</span>
+        <span class="keyword">this</span>.idMessage = id; <span class="comment">// Initialisation de 'idMessage' (final)</span>
+    }
+
+    <span class="comment">// Constructeur 2 (surchargé)</span>
+    <span class="modifier">public</span> <span class="method">Message</span>(<span class="type">String</span> texte) {
+        <span class="keyword">this</span>.contenu = texte; <span class="comment">// Initialisation de 'contenu' (final)</span>
+        <span class="comment">// 'idMessage' DOIT aussi être initialisé ici</span>
+        <span class="keyword">this</span>.idMessage = <span class="method">genererIdUnique</span>(); <span class="comment">// Appel une méthode pour l'id</span>
+    }
+
+    <span class="modifier">public</span> <span class="type">String</span> <span class="method">getContenu</span>() {
+        <span class="keyword">return</span> contenu;
+        <span class="comment">// Pas de setContenu() possible car 'contenu' est final</span>
+    }
+
+    <span class="modifier">public</span> <span class="type">long</span> <span class="method">getTimestamp</span>() {
+        <span class="keyword">return</span> timestamp;
+    }
+
+    <span class="modifier">public</span> <span class="type">int</span> <span class="method">getIdMessage</span>() {
+        <span class="keyword">return</span> idMessage;
+    }
+
+    <span class="modifier">private</span> <span class="type">int</span> <span class="method">genererIdUnique</span>() {
+        <span class="comment">// Logique pour générer un ID...</span>
+        <span class="keyword">return</span> (<span class="type">int</span>) (Math.<span class="method">random</span>() * <span class="number">10000</span>);
+    }
+}
+                   </code></pre>
+                    <p class="text-gray-700 mt-3 mb-2">
+                       Les attributs <code class="modifier">final</code> sont utiles pour représenter des caractéristiques d'un objet qui sont définies à sa création et ne doivent plus jamais changer par la suite (par exemple, un numéro de série, une date de création).
+                    </p>
+
+                 <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Constantes de Classe (<code class="modifier">public static final</code>)</h4>
+                 <p class="text-gray-700 mb-2">
+                    Une utilisation très fréquente de <code class="modifier">final</code> est en combinaison avec <code class="modifier">static</code> pour définir des <strong class="text-green-600">constantes de classe</strong>.
+                 </p>
+                   <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 mb-3">
+                       <li><code class="modifier">public</code> : La constante est accessible de partout.</li>
+                       <li><code class="modifier">static</code> : La constante appartient à la classe elle-même, pas à une instance. Il n'y en a qu'un seul exemplaire en mémoire.</li>
+                       <li><code class="modifier">final</code> : La valeur de la constante ne peut pas être changée après son initialisation.</li>
+                   </ul>
+                  <p class="text-gray-700 mb-2">
+                     Par convention, les noms des constantes (<code class="modifier">public static final</code>) sont écrits en <strong class="text-purple-600">MAJUSCULES</strong>, avec des mots séparés par des underscores (<code class="inline-code">_</code>).
+                  </p>
+                   <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Configuration</span> {
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="modifier">final</span> <span class="type">int</span> MAX_CONNEXIONS = <span class="number">10</span>;
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="modifier">final</span> <span class="type">String</span> URL_SERVEUR_DEFAUT = <span class="string">"http://example.com/api"</span>;
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="modifier">final</span> <span class="type">double</span> TAUX_TVA = <span class="number">0.20</span>;
+
+    <span class="comment">// Une constante objet (la référence est constante, l'objet String est immuable)</span>
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="modifier">final</span> <span class="type">String</span> VERSION = <span class="string">"1.2.0"</span>;
+
+    <span class="comment">// Peut être initialisée dans un bloc static si plus complexe</span>
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="modifier">final</span> <span class="type">long</span> TEMPS_DEMARRAGE;
+    <span class="keyword">static</span> {
+        System.<span class="keyword">out</span>.println(<span class="string">"Initialisation statique de Configuration..."</span>);
+        TEMPS_DEMARRAGE = System.<span class="method">currentTimeMillis</span>();
+    }
+}
+                   </code></pre>
+                    <pre class="bg-gray-900 text-white p-3 rounded text-sm mt-3"><code class="language-java">
+<span class="comment">// Utilisation des constantes ailleurs</span>
+<span class="modifier">public</span> <span class="modifier">static</span> <span class="type">void</span> <span class="method">main</span>(String[] args) {
+    System.<span class="keyword">out</span>.println(<span class="string">"Connexions max: "</span> + <span class="class-name">Configuration</span>.MAX_CONNEXIONS);
+    System.<span class="keyword">out</span>.println(<span class="string">"Serveur: "</span> + <span class="class-name">Configuration</span>.URL_SERVEUR_DEFAUT);
+    System.<span class="keyword">out</span>.println(<span class="string">"Version: "</span> + <span class="class-name">Configuration</span>.VERSION);
+    System.<span class="keyword">out</span>.println(<span class="string">"Démarrage: "</span> + <span class="class-name">Configuration</span>.TEMPS_DEMARRAGE);
+
+    <span class="comment">// Configuration.MAX_CONNEXIONS = 20; // ERREUR de compilation! C'est final.</span>
+}
+                    </code></pre>
+                    <p class="text-gray-700 mt-3 mb-2">
+                       Utiliser des constantes améliore la lisibilité du code (on voit <code class="inline-code">MAX_CONNEXIONS</code> au lieu du "nombre magique" <code class="number">10</code>) et facilite la maintenance (si la valeur doit changer, on la modifie à un seul endroit, dans la déclaration de la constante).
+                    </p>
+
+                   <div class="summary-box mt-4">
+                        <strong>Points clés sur final :</strong>
+                        <ul class="list-disc list-inside text-sm ml-4 mt-1">
+                            <li>Variable <code class="modifier">final</code> (locale ou attribut) : Initialisée une seule fois, sa valeur ou référence ne peut plus changer.</li>
+                            <li>Attribut d'instance <code class="modifier">final</code> : Doit être initialisé au plus tard à la fin des constructeurs.</li>
+                            <li>Variable objet <code class="modifier">final</code> : La référence est constante, mais l'objet référencé peut être modifié (s'il est mutable).</li>
+                            <li><code class="modifier">public static final</code> : Définit une <strong>constante de classe</strong> (valeur fixe, unique, accessible partout via <code class="class-name">NomClasse.CONSTANTE</code>). Convention : <code class="text-purple-600">NOM_EN_MAJUSCULES</code>.</li>
+                            <li>Utiliser des constantes améliore la lisibilité et la maintenance.</li>
+                        </ul>
+                    </div>
+            </article>
+        </section>
+
+        <section class="mb-8 p-4 border rounded-lg bg-purple-50" id="static">
+            <h2 class="text-2xl font-semibold text-purple-800 mb-4 border-b pb-2">
+                Cours 7: Variables et Méthodes de Classe (static)
+                <a href="#top" class="float-right text-sm text-purple-600 hover:text-purple-800 font-normal">↑ Haut</a>
+            </h2>
+            <article>
+                <h3 class="text-xl font-semibold">Membres Associés à la Classe, Pas aux Instances</h3>
+                <p class="text-gray-700 mb-3">
+                    Jusqu'à présent, la plupart des membres (attributs et méthodes) que nous avons vus étaient des <strong class="text-blue-600">membres d'instance</strong>. Chaque objet (instance) avait sa propre copie des attributs (<code class="inline-code">abscisse</code>, <code class="inline-code">ordonnee</code> pour <code class="class-name">PointPlan</code>) et les méthodes opéraient sur l'état de cet objet spécifique (<code class="keyword">this</code>).
+                </p>
+                <p class="text-gray-700 mb-2">
+                    Le mot-clé <code class="modifier">static</code> change cela. Un membre déclaré <code class="modifier">static</code> appartient à la <strong class="text-red-600">classe elle-même</strong>, et non à une instance particulière.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-medium text-gray-700 mb-2">Variables de Classe (<code class="modifier">static</code>)</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 mb-3">
+                            <li>Il n'existe qu'<strong class="text-red-600">une seule et unique copie</strong> d'une variable statique pour toute la classe, peu importe le nombre d'objets créés (ou même s'il n'y en a aucun).</li>
+                            <li>Cette copie est <strong class="text-blue-600">partagée</strong> par toutes les instances de la classe. Si une instance modifie la variable statique, toutes les autres instances "verront" ce changement.</li>
+                            <li>Elles sont initialisées au chargement de la classe.</li>
+                            <li>On y accède <strong class="italic">principalement</strong> via le nom de la classe : <code class="inline-code">NomClasse.variableStatique</code>. (L'accès via une instance, <code class="inline-code">objet.variableStatique</code>, est possible mais <strong class="italic">fortement déconseillé</strong> car il masque le fait que la variable est statique).</li>
+                            <li>Utiles pour :
+                                <ul class="list-circle list-inside ml-6 text-sm">
+                                     <li>Compteurs globaux (ex: nombre d'objets créés).</li>
+                                     <li>Constantes (<code class="modifier">public static final</code>, vu précédemment).</li>
+                                     <li>Ressources partagées (avec précaution pour le multi-threading).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Utilisateur</span> {
+    <span class="modifier">private</span> <span class="type">String</span> nom; <span class="comment">// Variable d'instance</span>
+    <span class="modifier">private</span> <span class="type">int</span> id; <span class="comment">// Variable d'instance</span>
+
+    <span class="comment">// Variable de classe (statique) pour compter les utilisateurs</span>
+    <span class="modifier">private</span> <span class="modifier">static</span> <span class="type">int</span> compteurUtilisateurs = <span class="number">0</span>;
+
+    <span class="comment">// Variable statique pour générer des IDs uniques</span>
+    <span class="modifier">private</span> <span class="modifier">static</span> <span class="type">int</span> prochainId = <span class="number">1</span>;
+
+    <span class="modifier">public</span> <span class="method">Utilisateur</span>(<span class="type">String</span> nom) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="comment">// Attribue l'ID suivant et incrémente la variable statique</span>
+        <span class="keyword">this</span>.id = prochainId;
+        prochainId++;
+        <span class="comment">// Incrémente le compteur statique</span>
+        compteurUtilisateurs++;
+        System.<span class="keyword">out</span>.println(<span class="string">"   Création Utilisateur '"</span> + nom + <span class="string">"' (ID="</span> + <span class="keyword">this</span>.id + <span class="string">"). Total: "</span> + compteurUtilisateurs);
+    }
+
+    <span class="modifier">public</span> <span class="type">String</span> <span class="method">getNom</span>() { <span class="keyword">return</span> <span class="keyword">this</span>.nom; }
+    <span class="modifier">public</span> <span class="type">int</span> <span class="method">getId</span>() { <span class="keyword">return</span> <span class="keyword">this</span>.id; }
+
+    <span class="comment">// Méthode statique pour accéder au compteur (voir section suivante)</span>
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">int</span> <span class="method">getCompteurUtilisateurs</span>() {
+        <span class="keyword">return</span> compteurUtilisateurs;
+    }
+}
+                        </code></pre>
+                         <pre class="bg-gray-900 text-white p-3 rounded text-sm mt-3"><code class="language-java">
+<span class="comment">// Ailleurs...</span>
+System.<span class="keyword">out</span>.println(<span class="string">"Avant création: "</span> + <span class="class-name">Utilisateur</span>.<span class="method">getCompteurUtilisateurs</span>()); <span class="comment">// -> 0</span>
+
+<span class="class-name">Utilisateur</span> u1 = <span class="keyword">new</span> <span class="class-name">Utilisateur</span>(<span class="string">"Alice"</span>);
+<span class="class-name">Utilisateur</span> u2 = <span class="keyword">new</span> <span class="class-name">Utilisateur</span>(<span class="string">"Bob"</span>);
+<span class="class-name">Utilisateur</span> u3 = <span class="keyword">new</span> <span class="class-name">Utilisateur</span>(<span class="string">"Charlie"</span>);
+
+System.<span class="keyword">out</span>.println(<span class="string">"Après créations: "</span> + <span class="class-name">Utilisateur</span>.<span class="method">getCompteurUtilisateurs</span>()); <span class="comment">// -> 3</span>
+
+<span class="comment">// Accès (déconseillé) via une instance :</span>
+<span class="comment">// System.out.println("Compteur via u1: " + u1.getCompteurUtilisateurs()); // Fonctionne mais masque la nature statique</span>
+                         </code></pre>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-gray-700 mb-2">Méthodes de Classe (<code class="modifier">static</code>)</h4>
+                         <ul class="list-disc list-inside text-gray-700 space-y-1 mb-3">
+                            <li>Une méthode statique est appelée directement sur la <strong class="text-red-600">classe</strong> (<code class="inline-code">NomClasse.methodeStatique()</code>), sans avoir besoin de créer une instance.</li>
+                            <li>Conséquence majeure : Une méthode statique <strong class="text-red-600">NE PEUT PAS</strong> accéder directement aux membres d'instance (attributs ou méthodes non statiques) de la classe, car elle n'opère pas sur un objet spécifique. Il n'y a pas d'objet courant, donc <code class="keyword">this</code> n'est <strong class="text-red-600">pas disponible</strong> dans une méthode statique.</li>
+                            <li>Elle <strong class="text-blue-600">peut</strong> accéder aux autres membres <strong class="text-blue-600">statiques</strong> (variables et méthodes) de la classe.</li>
+                             <li>Elle peut créer des instances de sa propre classe (<code class="keyword">new NomClasse(...)</code>) et appeler des méthodes sur ces instances.</li>
+                            <li>Utiles pour :
+                                 <ul class="list-circle list-inside ml-6 text-sm">
+                                     <li>Méthodes utilitaires qui ne dépendent pas de l'état d'un objet spécifique (ex: <code class="method">Math.sqrt()</code>, <code class="method">Math.max()</code>, <code class="method">Integer.parseInt()</code>).</li>
+                                     <li>Méthodes "Factory" qui créent et retournent des instances de la classe (parfois avec une logique de création complexe).</li>
+                                     <li>Accéder ou manipuler des variables statiques (comme <code class="method">getCompteurUtilisateurs()</code> dans l'exemple précédent).</li>
+                                      <li>Le point d'entrée d'une application Java : <code class="method">public static void main(String[] args)</code>. La JVM doit pouvoir l'appeler sans créer d'objet au préalable.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                         <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Calculatrice</span> {
+    <span class="comment">// Attribut d'instance (pourrait stocker un historique par ex.)</span>
+    <span class="modifier">private</span> <span class="type">String</span> nomCalculatrice;
+
+    <span class="modifier">public</span> <span class="method">Calculatrice</span>(<span class="type">String</span> nom) { <span class="keyword">this</span>.nomCalculatrice = nom; }
+
+    <span class="comment">// --- Méthodes STATIQUES (utilitaires) ---</span>
+    <span class="comment">// Pas besoin d'objet Calculatrice pour les appeler</span>
+
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">int</span> <span class="method">additionner</span>(<span class="type">int</span> a, <span class="type">int</span> b) {
+        <span class="comment">// On ne peut pas accéder à 'nomCalculatrice' ici (non statique)</span>
+        <span class="comment">// System.out.println(this.nomCalculatrice); // ERREUR! 'this' interdit</span>
+        <span class="keyword">return</span> a + b;
+    }
+
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">int</span> <span class="method">soustraire</span>(<span class="type">int</span> a, <span class="type">int</span> b) {
+        <span class="keyword">return</span> a - b;
+    }
+
+    <span class="comment">// Méthode statique "Factory"</span>
+    <span class="modifier">public</span> <span class="modifier">static</span> <span class="class-name">Calculatrice</span> <span class="method">creerCalculatriceStandard</span>() {
+        <span class="comment">// Une méthode statique PEUT créer des objets</span>
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="class-name">Calculatrice</span>(<span class="string">"Standard"</span>);
+    }
+
+    <span class="comment">// --- Méthode d'instance ---</span>
+    <span class="comment">// Nécessite un objet Calculatrice pour être appelée</span>
+    <span class="modifier">public</span> <span class="type">void</span> <span class="method">afficherNom</span>() {
+        System.<span class="keyword">out</span>.println(<span class="string">"Nom: "</span> + <span class="keyword">this</span>.nomCalculatrice); <span class="comment">// OK, 'this' existe ici</span>
+    }
+}
+                         </code></pre>
+                         <pre class="bg-gray-900 text-white p-3 rounded text-sm mt-3"><code class="language-java">
+<span class="comment">// Ailleurs...</span>
+
+<span class="comment">// Appel de méthodes statiques via la classe</span>
+<span class="type">int</span> somme = <span class="class-name">Calculatrice</span>.<span class="method">additionner</span>(<span class="number">10</span>, <span class="number">5</span>);
+System.<span class="keyword">out</span>.println(<span class="string">"Somme: "</span> + somme); <span class="comment">// -> 15</span>
+
+<span class="type">int</span> diff = <span class="class-name">Calculatrice</span>.<span class="method">soustraire</span>(<span class="number">10</span>, <span class="number">5</span>);
+System.<span class="keyword">out</span>.println(<span class="string">"Différence: "</span> + diff); <span class="comment">// -> 5</span>
+
+<span class="comment">// Appel d'une méthode statique factory</span>
+<span class="class-name">Calculatrice</span> calc = <span class="class-name">Calculatrice</span>.<span class="method">creerCalculatriceStandard</span>();
+
+<span class="comment">// Appel d'une méthode d'instance via l'objet créé</span>
+calc.<span class="method">afficherNom</span>(); <span class="comment">// -> Nom: Standard</span>
+
+<span class="comment">// Appel d'une méthode statique via l'objet (déconseillé)</span>
+<span class="comment">// int somme2 = calc.additionner(20, 3); // Fonctionne, mais masque la nature statique</span>
+                         </code></pre>
+                    </div>
+                </div>
+                 <p class="text-gray-700 mt-4">
+                     En résumé, <code class="modifier">static</code> est utilisé pour les membres qui sont logiquement liés à la classe dans son ensemble plutôt qu'à un objet individuel.
+                 </p>
+                 <div class="summary-box mt-4">
+                        <strong>Points clés sur static :</strong>
+                        <ul class="list-disc list-inside text-sm ml-4 mt-1">
+                            <li>Membre <code class="modifier">static</code> (variable ou méthode) : Appartient à la <strong>classe</strong>, pas aux instances.</li>
+                            <li>Variable <code class="modifier">static</code> : Une seule copie partagée par toutes les instances. Accès via <code class="class-name">NomClasse.variable</code>.</li>
+                            <li>Méthode <code class="modifier">static</code> : Appelée via <code class="class-name">NomClasse.methode()</code>. N'a <strong class="text-red-600">pas accès</strong> aux membres d'instance (non-statiques) via <code class="keyword">this</code>. Peut accéder aux membres statiques.</li>
+                            <li>Utile pour constantes, compteurs globaux, méthodes utilitaires, factories, et le point d'entrée <code class="method">main()</code>.</li>
+                        </ul>
+                    </div>
+            </article>
+        </section>
+
+        <section class="mb-8 p-4 border rounded-lg bg-indigo-50" id="heritage">
+             <h2 class="text-2xl font-semibold text-indigo-800 mb-4 border-b pb-2">
+                 Cours 8: Héritage : Créer des Relations entre Classes
+                <a href="#top" class="float-right text-sm text-indigo-600 hover:text-indigo-800 font-normal">↑ Haut</a>
+             </h2>
+
+            <article class="mb-6">
+                <h3 class="text-xl font-semibold" id="heritage-motivation">10.1 Motivation : Éviter la Répétition</h3>
+                <p class="text-gray-700 mb-4">
+                    Imaginons que nous modélisions différents types d'employés dans une entreprise : des développeurs, des managers, des designers. Ils partagent probablement des caractéristiques communes (un nom, un ID, un salaire de base, une méthode pour calculer les impôts sur le salaire de base) mais ont aussi des spécificités (langages de programmation pour un développeur, équipe gérée pour un manager, logiciel préféré pour un designer).
+                </p>
+                 <p class="text-gray-700 mb-2">
+                    Sans un mécanisme pour partager le code commun, nous devrions répéter les attributs et méthodes communs dans chaque classe d'employé :
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <h4 class="font-medium text-gray-700 mb-2">Classe Developpeur (Potentiellement Redondante)</h4>
+                        <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Developpeur</span> {
+    <span class="modifier">private</span> <span class="type">String</span> nom;       <span class="comment">// Commun</span>
+    <span class="modifier">private</span> <span class="type">int</span> id;          <span class="comment">// Commun</span>
+    <span class="modifier">private</span> <span class="type">double</span> salaireBase; <span class="comment">// Commun</span>
+    <span class="modifier">private</span> <span class="type">String</span>[] langages; <span class="comment">// Spécifique</span>
+
+    <span class="modifier">public</span> <span class="method">Developpeur</span>(<span class="type">String</span> n, <span class="type">int</span> i, <span class="type">double</span> s, <span class="type">String</span>[] l) {
+        <span class="keyword">this</span>.nom = n;
+        <span class="keyword">this</span>.id = i;
+        <span class="keyword">this</span>.salaireBase = s;
+        <span class="keyword">this</span>.langages = l;
+    }
+
+    <span class="modifier">public</span> <span class="type">double</span> <span class="method">calculerImpot</span>() { <span class="comment">// Commun</span>
+        <span class="keyword">return</span> <span class="keyword">this</span>.salaireBase * <span class="number">0.3</span>; <span class="comment">// Logique commune</span>
+    }
+    <span class="modifier">public</span> <span class="type">String</span> <span class="method">getNom</span>(){ <span class="keyword">return</span> nom; } <span class="comment">// Commun</span>
+     <span class="comment">// ... autres getters/setters communs ...</span>
+
+     <span class="modifier">public</span> <span class="type">String</span>[] <span class="method">getLangages</span>(){ <span class="keyword">return</span> langages; } <span class="comment">// Spécifique</span>
+}
+                        </code></pre>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <h4 class="font-medium text-gray-700 mb-2">Classe Manager (Potentiellement Redondante)</h4>
+                        <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Manager</span> {
+    <span class="modifier">private</span> <span class="type">String</span> nom;       <span class="comment">// Commun</span>
+    <span class="modifier">private</span> <span class="type">int</span> id;          <span class="comment">// Commun</span>
+    <span class="modifier">private</span> <span class="type">double</span> salaireBase; <span class="comment">// Commun</span>
+    <span class="modifier">private</span> <span class="type">String</span> nomEquipe; <span class="comment">// Spécifique</span>
+
+     <span class="modifier">public</span> <span class="method">Manager</span>(<span class="type">String</span> n, <span class="type">int</span> i, <span class="type">double</span> s, <span class="type">String</span> eq) {
+        <span class="keyword">this</span>.nom = n;
+        <span class="keyword">this</span>.id = i;
+        <span class="keyword">this</span>.salaireBase = s;
+        <span class="keyword">this</span>.nomEquipe = eq;
+    }
+
+     <span class="modifier">public</span> <span class="type">double</span> <span class="method">calculerImpot</span>() { <span class="comment">// Commun</span>
+        <span class="keyword">return</span> <span class="keyword">this</span>.salaireBase * <span class="number">0.3</span>; <span class="comment">// Logique commune</span>
+    }
+     <span class="modifier">public</span> <span class="type">String</span> <span class="method">getNom</span>(){ <span class="keyword">return</span> nom; } <span class="comment">// Commun</span>
+     <span class="comment">// ... autres getters/setters communs ...</span>
+
+     <span class="modifier">public</span> <span class="type">String</span> <span class="method">getNomEquipe</span>(){ <span class="keyword">return</span> nomEquipe; } <span class="comment">// Spécifique</span>
+}
+                        </code></pre>
+                    </div>
+                </div>
+                <p class="text-gray-700 mt-4">
+                    Cette duplication de code (attributs <code class="inline-code">nom</code>, <code class="inline-code">id</code>, <code class="inline-code">salaireBase</code> et méthode <code class="method">calculerImpot()</code>) est problématique :
+                </p>
+                 <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 text-sm">
+                    <li>Augmente le risque d'erreurs (une correction doit être faite partout).</li>
+                    <li>Rend le code plus difficile à maintenir et à faire évoluer.</li>
+                    <li>Alourdit le code source.</li>
+                </ul>
+            </article>
+
+            <article class="mb-6">
+                <h3 class="text-xl font-semibold" id="heritage-solution">10.2 Solution : L'Héritage avec <code class="keyword">extends</code></h3>
+                <p class="text-gray-700 mb-4">
+                    L'héritage permet de résoudre ce problème en créant une classe plus générale (appelée <strong class="text-blue-600">classe mère</strong>, super-classe ou classe de base) qui contient les membres communs, et des classes plus spécifiques (appelées <strong class="text-blue-600">classes filles</strong>, sous-classes ou classes dérivées) qui <strong class="text-red-600">héritent</strong> de ces membres et ajoutent leurs propres spécificités.
+                </p>
+                <p class="text-gray-700 mb-2">
+                     En Java, on utilise le mot-clé <code class="keyword">extends</code> pour indiquer qu'une classe hérite d'une autre.
+                 </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                     <div class="bg-gray-100 p-4 rounded border border-gray-300 shadow-sm">
+                        <h4 class="font-medium text-gray-800 mb-2">Classe Mère : Employe</h4>
+                        <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Employe</span> {
+    <span class="comment">// Attributs communs</span>
+    <span class="comment">// 'protected' : accessible par les classes filles (voir section 10.11)</span>
+    <span class="modifier">protected</span> <span class="type">String</span> nom;
+    <span class="modifier">protected</span> <span class="type">int</span> id;
+    <span class="modifier">protected</span> <span class="type">double</span> salaireBase;
+
+    <span class="comment">// Constructeur pour initialiser les parties communes</span>
+    <span class="modifier">public</span> <span class="method">Employe</span>(<span class="type">String</span> nom, <span class="type">int</span> id, <span class="type">double</span> salaireBase) {
+        System.<span class="keyword">out</span>.println(<span class="string">"   Constructeur Employe..."</span>);
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.id = id;
+        <span class="keyword">this</span>.salaireBase = salaireBase;
+    }
+
+    <span class="comment">// Méthode commune</span>
+    <span class="modifier">public</span> <span class="type">double</span> <span class="method">calculerImpot</span>() {
+        System.<span class="keyword">out</span>.println(<span class="string">"   Calcul impot Employe"</span>);
+        <span class="keyword">return</span> <span class="keyword">this</span>.salaireBase * <span class="number">0.3</span>;
+    }
+
+    <span class="comment">// Getters communs</span>
+    <span class="modifier">public</span> <span class="type">String</span> <span class="method">getNom</span>() { <span class="keyword">return</span> nom; }
+    <span class="modifier">public</span> <span class="type">int</span> <span class="method">getId</span>() { <span class="keyword">return</span> id; }
+    <span class="modifier">public</span> <span class="type">double</span> <span class="method">getSalaireBase</span>() { <span class="keyword">return</span> salaireBase; }
+
+    <span class="comment">// toString commun (bonne pratique)</span>
+    <span class="annotation">@Override</span>
+    <span class="modifier">public</span> <span class="type">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Employe[id="</span> + id + <span class="string">", nom="</span> + nom + <span class="string">", salaire="</span> + salaireBase + <span class="string">"]"</span>;
+    }
+}
+                        </code></pre>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 p-4 rounded border border-blue-200 shadow-sm">
+                            <h4 class="font-medium text-blue-800 mb-2">Classe Fille : Developpeur</h4>
+                            <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Developpeur étend (hérite de) Employe</span>
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Developpeur</span> <span class="keyword">extends</span> <span class="class-name">Employe</span> {
+    <span class="comment">// nom, id, salaireBase, calculerImpot(), getNom(), etc. sont HÉRITÉS</span>
+
+    <span class="comment">// Attribut spécifique</span>
+    <span class="modifier">private</span> <span class="type">String</span>[] langages;
+
+    <span class="comment">// Constructeur de Developpeur</span>
+    <span class="modifier">public</span> <span class="method">Developpeur</span>(<span class="type">String</span> n, <span class="type">int</span> i, <span class="type">double</span> s, <span class="type">String</span>[] l) {
+        <span class="comment">// APPEL OBLIGATOIRE au constructeur de la classe mère (Employe)</span>
+        <span class="comment">// 'super(...)' doit être la 1ère instruction</span>
+        <span class="keyword">super</span>(n, i, s); <span class="comment">// Appelle Employe(nom, id, salaireBase)</span>
+        System.<span class="keyword">out</span>.println(<span class="string">"   Constructeur Developpeur..."</span>);
+        <span class="comment">// Initialisation de la partie spécifique</span>
+        <span class="keyword">this</span>.langages = l;
+    }
+
+    <span class="comment">// Méthode spécifique</span>
+    <span class="modifier">public</span> <span class="type">String</span>[] <span class="method">getLangages</span>() {
+        <span class="keyword">return</span> langages;
+    }
+
+    <span class="comment">// On peut aussi REDÉFINIR une méthode héritée (voir section 10.10)</span>
+    <span class="annotation">@Override</span>
+     <span class="modifier">public</span> <span class="type">String</span> <span class="method">toString</span>() {
+        <span class="comment">// Réutilise toString() de la classe mère via 'super'</span>
+         <span class="type">String</span> base = <span class="keyword">super</span>.<span class="method">toString</span>();
+         <span class="keyword">return</span> base.<span class="method">replace</span>(<span class="string">"Employe"</span>, <span class="string">"Developpeur"</span>)
+                + <span class="string">" Langages:"</span> + java.util.Arrays.<span class="method">toString</span>(langages);
+     }
+}
+                            </code></pre>
+                        </div>
+                         <div class="bg-green-50 p-4 rounded border border-green-200 shadow-sm">
+                            <h4 class="font-medium text-green-800 mb-2">Classe Fille : Manager</h4>
+                            <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Manager étend aussi Employe</span>
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Manager</span> <span class="keyword">extends</span> <span class="class-name">Employe</span> {
+    <span class="comment">// Hérite des membres de Employe</span>
+
+    <span class="comment">// Spécifique</span>
+    <span class="modifier">private</span> <span class="type">String</span> nomEquipe;
+
+    <span class="modifier">public</span> <span class="method">Manager</span>(<span class="type">String</span> n, <span class="type">int</span> i, <span class="type">double</span> s, <span class="type">String</span> eq) {
+        <span class="keyword">super</span>(n, i, s); <span class="comment">// Appel constructeur Employe</span>
+        System.<span class="keyword">out</span>.println(<span class="string">"   Constructeur Manager..."</span>);
+        <span class="keyword">this</span>.nomEquipe = eq;
+    }
+
+    <span class="modifier">public</span> <span class="type">String</span> <span class="method">getNomEquipe</span>() { <span class="keyword">return</span> nomEquipe; }
+
+    <span class="comment">// Un manager pourrait avoir un calcul d'impôt différent (redéfinition)</span>
+     <span class="annotation">@Override</span>
+     <span class="modifier">public</span> <span class="type">double</span> <span class="method">calculerImpot</span>() {
+         System.<span class="keyword">out</span>.println(<span class="string">"   Calcul impot Manager"</span>);
+         <span class="type">double</span> impotBase = <span class="keyword">super</span>.<span class="method">calculerImpot</span>(); <span class="comment">// Peut réutiliser le calcul de base</span>
+         <span class="type">double</span> bonusImpot = <span class="keyword">this</span>.salaireBase * <span class="number">0.1</span>; <span class="comment">// + 10% d'impôt pour le manager ?</span>
+         <span class="keyword">return</span> impotBase + bonusImpot;
+     }
+
+     <span class="annotation">@Override</span>
+     <span class="modifier">public</span> <span class="type">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="keyword">super</span>.<span class="method">toString</span>().<span class="method">replace</span>(<span class="string">"Employe"</span>, <span class="string">"Manager"</span>)
+               + <span class="string">" Equipe:"</span> + nomEquipe;
+     }
+}
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+                 <p class="text-gray-700 mt-4">
+                    Ici, <code class="class-name">Employe</code> est la classe mère. <code class="class-name">Developpeur</code> et <code class="class-name">Manager</code> sont des classes filles qui héritent des membres de <code class="class-name">Employe</code>. Elles n'ont besoin de déclarer que leurs membres spécifiques et d'appeler le constructeur de la classe mère via <code class="keyword">super(...)</code> pour initialiser la partie héritée.
+                </p>
+            </article>
+
+            <article class="mb-6">
+                <h3 class="text-xl font-semibold" id="heritage-structure">10.3 Structure d'une Classe Étendue</h3>
+                <p class="text-gray-700 mb-4">
+                    Conceptuellement, un objet d'une classe fille (<code class="class-name">Developpeur</code>) est composé de deux parties :
+                </p>
+                 <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4 mb-3">
+                    <li>La partie <strong class="text-blue-600">héritée</strong> de la classe mère (<code class="class-name">Employe</code>), contenant les attributs et méthodes définis dans <code class="class-name">Employe</code>.</li>
+                    <li>La partie <strong class="text-green-600">spécifique</strong> définie dans la classe fille (<code class="class-name">Developpeur</code>), contenant les attributs et méthodes ajoutés ou redéfinis.</li>
+                </ul>
+                <div class="bg-gray-50 p-4 rounded border border-gray-200 flex flex-col md:flex-row gap-6">
+                    <div class="flex-1">
+                        <h4 class="font-medium text-gray-700 mb-2">Code <code class="class-name">Developpeur extends Employe</code></h4>
+                        <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Developpeur</span> <span class="keyword">extends</span> <span class="class-name">Employe</span> {
+    <span class="comment">// --- Partie implicite héritée de Employe ---</span>
+    <span class="comment">//     (N'apparaît pas DANS CE FICHIER)</span>
+    <span class="comment">// protected String nom;</span>
+    <span class="comment">// protected int id;</span>
+    <span class="comment">// protected double salaireBase;</span>
+    <span class="comment">// public Employe(String, int, double);</span>
+    <span class="comment">// public double calculerImpot(); // Version Employe</span>
+    <span class="comment">// public String getNom();</span>
+    <span class="comment">// public int getId();</span>
+    <span class="comment">// public double getSalaireBase();</span>
+    <span class="comment">// public String toString(); // Version Employe</span>
+    <span class="comment">// --- Fin partie implicite ---</span>
+
+    <span class="comment">// --- Partie spécifique explicite ---</span>
+    <span class="modifier">private</span> <span class="type">String</span>[] langages;
+
+    <span class="modifier">public</span> <span class="method">Developpeur</span>(<span class="type">String</span> n, <span class="type">int</span> i, <span class="type">double</span> s, <span class="type">String</span>[] l) {
+        <span class="keyword">super</span>(n, i, s); <span class="comment">// Initialise la partie héritée</span>
+        <span class="keyword">this</span>.langages = l; <span class="comment">// Initialise la partie spécifique</span>
+    }
+
+    <span class="modifier">public</span> <span class="type">String</span>[] <span class="method">getLangages</span>() { <span class="keyword">return</span> langages; }
+
+    <span class="annotation">@Override</span>
+    <span class="modifier">public</span> <span class="type">String</span> <span class="method">toString</span>() { <span class="comment">/* ... redéfinition ... */</span> }
+    <span class="comment">// --- Fin partie spécifique ---</span>
+}
+                        </code></pre>
+                    </div>
+                    <div class="flex-1 md:border-l md:pl-6 border-gray-300">
+                         <h4 class="font-medium text-gray-700 mb-2">Représentation Conceptuelle d'un objet <code class="class-name">Developpeur</code></h4>
+                         <div class="border rounded overflow-hidden">
+                             <div class="bg-blue-100 p-3 border-b">
+                                 <strong class="text-blue-800">Partie Héritée (de <code class="class-name">Employe</code>)</strong>
+                                 <ul class="list-disc list-inside text-sm ml-4 mt-1 font-mono text-blue-900">
+                                     <li><code class="inline-code">nom: String</code></li>
+                                     <li><code class="inline-code">id: int</code></li>
+                                     <li><code class="inline-code">salaireBase: double</code></li>
+                                     <li><code class="method">calculerImpot()</code></li>
+                                     <li><code class="method">getNom()</code>, <code class="method">getId()</code>, ...</li>
+                                     <li><code class="method">toString()</code> (version <code class="class-name">Employe</code>)</li>
+                                 </ul>
+                             </div>
+                             <div class="bg-green-100 p-3">
+                                 <strong class="text-green-800">Partie Spécifique (<code class="class-name">Developpeur</code>)</strong>
+                                 <ul class="list-disc list-inside text-sm ml-4 mt-1 font-mono text-green-900">
+                                     <li><code class="inline-code">langages: String[]</code></li>
+                                     <li><code class="method">getLangages()</code></li>
+                                     <li><code class="method">toString()</code> (version <code class="class-name">Developpeur</code>, redéfinie)</li>
+                                 </ul>
+                             </div>
+                         </div>
+                         <p class="text-xs text-gray-600 mt-2">
+                             Un objet <code class="class-name">Developpeur</code> <strong class="italic">est un</strong> <code class="class-name">Employe</code> (relation "IS-A"), mais avec des caractéristiques en plus.
+                         </p>
+                    </div>
+                </div>
+            </article>
+
+
+            <article class="mb-6 grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold" id="heritage-caracteristiques">10.4 Caractéristiques de l'Héritage</h3>
+                     <p class="text-gray-700 mb-4">
+                        L'héritage est un mécanisme puissant qui permet :
+                    </p>
+                     <ul class="list-disc list-inside text-gray-700 space-y-1 mb-3">
+                         <li>D'<strong class="text-blue-600">étendre</strong> une classe existante en ajoutant de nouveaux attributs et/ou de nouvelles méthodes.</li>
+                         <li>De <strong class="text-green-600">spécialiser</strong> une classe existante en <strong class="text-red-600">redéfinissant</strong> (override) le comportement de méthodes héritées.</li>
+                     </ul>
+                      <p class="text-gray-700 mb-2">
+                         Une classe fille hérite de <strong class="italic">tous</strong> les membres <code class="modifier">public</code> et <code class="modifier">protected</code> de sa classe mère. Elle hérite aussi des membres <code class="italic">package-private</code> si elle est dans le même package.
+                      </p>
+                       <p class="text-gray-700 mb-2">
+                         Elle n'hérite <strong class="text-red-600">pas</strong> des membres <code class="modifier">private</code> de la classe mère (ils existent dans l'objet mais ne sont pas directement accessibles par le code de la classe fille).
+                       </p>
+                      <p class="text-gray-700 mb-2">
+                         Elle n'hérite <strong class="text-red-600">pas</strong> des constructeurs de la classe mère (mais doit les appeler via <code class="keyword">super(...)</code>).
+                      </p>
+                     <p class="text-gray-700 mb-2">
+                        On ne peut pas "retirer" ou "supprimer" un membre hérité. On peut seulement le <strong class="text-red-600">masquer</strong> en le redéfinissant.
+                     </p>
+
+                     <h4 class="text-lg font-medium text-gray-700 mt-4 mb-2">Diagramme UML (Simplifié)</h4>
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200 text-sm font-mono">
+                        <div class="mb-2">
+                            <strong class="class-name">Employe</strong><br>
+                            # <span class="type">String</span> nom<br>
+                            # <span class="type">int</span> id<br>
+                            # <span class="type">double</span> salaireBase<br>
+                            + <span class="method">Employe</span>(...)<br>
+                            + <span class="type">double</span> <span class="method">calculerImpot</span>()<br>
+                            + <span class="type">String</span> <span class="method">getNom</span>()<br>
+                            ...<br>
+                            + <span class="type">String</span> <span class="method">toString</span>()<br>
+                        </div>
+                        <div class="pl-4 border-l-2 border-blue-500 mb-2">
+                            <strong class="class-name">Developpeur</strong> <span class="keyword">extends</span> Employe<br>
+                             <span class="comment">/* Hérite de Employe */</span><br>
+                            - <span class="type">String[]</span> langages<br>
+                            + <span class="method">Developpeur</span>(...)<br>
+                            + <span class="type">String[]</span> <span class="method">getLangages</span>()<br>
+                            + <span class="type">String</span> <span class="method">toString</span>() <span class="comment">(Redéfinie)</span><br>
+                        </div>
+                        <div class="pl-4 border-l-2 border-green-500">
+                            <strong class="class-name">Manager</strong> <span class="keyword">extends</span> Employe<br>
+                             <span class="comment">/* Hérite de Employe */</span><br>
+                            - <span class="type">String</span> nomEquipe<br>
+                            + <span class="method">Manager</span>(...)<br>
+                            + <span class="type">String</span> <span class="method">getNomEquipe</span>()<br>
+                            + <span class="type">double</span> <span class="method">calculerImpot</span>() <span class="comment">(Redéfinie)</span><br>
+                            + <span class="type">String</span> <span class="method">toString</span>() <span class="comment">(Redéfinie)</span><br>
+                        </div>
+                         <p class="text-xs text-gray-500 mt-2 normal-case font-sans">Légende UML (simplifiée): + public, # protected, - private</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold" id="heritage-vocabulaire">10.5 Vocabulaire Clé</h3>
+                    <p class="text-gray-700 mb-2">Pour la relation <code class="class-name">Developpeur extends Employe</code> :</p>
+                    <table class="w-full text-sm border border-collapse border-gray-300">
+                        <thead class="bg-yellow-100">
+                            <tr>
+                                <th class="border p-2 text-left">Terme pour <code class="class-name">Employe</code></th>
+                                <th class="border p-2 text-left">Terme pour <code class="class-name">Developpeur</code></th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-yellow-50">
+                            <tr><td class="border p-2">Classe Mère</td><td class="border p-2">Classe Fille</td></tr>
+                            <tr><td class="border p-2">Super-classe</td><td class="border p-2">Sous-classe</td></tr>
+                            <tr><td class="border p-2">Classe de Base</td><td class="border p-2">Classe Dérivée</td></tr>
+                             <tr><td class="border p-2">Généralisation</td><td class="border p-2">Spécialisation</td></tr>
+                        </tbody>
+                    </table>
+                     <p class="text-gray-700 mt-3">On dit aussi que <code class="class-name">Developpeur</code> <strong class="text-red-600">est un</strong> (<span class="italic">IS-A</span>) <code class="class-name">Employe</code>. C'est la relation fondamentale de l'héritage.</p>
+
+                    <h3 class="text-xl font-semibold mt-6" id="heritage-interets">10.6 Intérêts Principaux</h3>
+                    <ul class="list-decimal list-inside text-gray-700 space-y-2 mt-2">
+                        <li>
+                            <strong>Réutilisation de Code :</strong>
+                            Éviter de réécrire les membres communs. Le code de <code class="class-name">Employe</code> est écrit une seule fois et réutilisé par <code class="class-name">Developpeur</code>, <code class="class-name">Manager</code>, et potentiellement d'autres futures classes (ex: <code class="class-name">Designer</code>, <code class="class-name">Comptable</code>...).
+                            <pre class="text-xs mt-1 font-mono bg-gray-100 p-1 rounded">
+      Employe
+      ↑     ↑
+ Developpeur Manager ...
+                            </pre>
+                        </li>
+                        <li>
+                            <strong>Factorisation :</strong>
+                            Identifier les éléments communs à plusieurs classes et les regrouper dans une classe mère abstraite ou concrète.
+                        </li>
+                         <li>
+                            <strong>Extensibilité :</strong>
+                             Facilite l'ajout de nouvelles fonctionnalités ou de nouveaux types (ex: ajouter une classe <code class="class-name">Stagiaire</code> qui étend <code class="class-name">Employe</code>) sans modifier massivement le code existant.
+                        </li>
+                         <li>
+                            <strong>Polymorphisme (sera vu plus en détail) :</strong>
+                             Permet de manipuler des objets de classes filles via une référence de la classe mère, offrant une grande flexibilité. Par exemple, avoir une liste d'<code class="class-name">Employe</code> contenant à la fois des <code class="class-name">Developpeur</code>s et des <code class="class-name">Manager</code>s.
+                        </li>
+                    </ul>
+                     <div class="mt-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded text-sm">
+                        <strong class="font-semibold">Bénéfices :</strong> Code plus court, plus clair, plus facile à maintenir, moins d'erreurs, meilleure organisation, plus grande flexibilité pour l'évolution.
+                    </div>
+                </div>
+            </article>
+
+            <article class="mb-6 grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold" id="heritage-regles">10.7 Règles d'Héritage en Java</h3>
+                     <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Une classe mère peut avoir plusieurs classes filles. (<code class="class-name">Employe</code> a <code class="class-name">Developpeur</code> et <code class="class-name">Manager</code> comme filles).</li>
+                        <li><strong class="text-red-600">Héritage Simple :</strong> Une classe fille ne peut avoir <strong class="text-red-600">qu'une seule classe mère directe</strong>. Java ne supporte pas l'héritage multiple de classes (une classe ne peut pas faire <code class="inline-code">extends ClasseA, ClasseB</code>). C'est pour éviter le "problème du diamant" (ambiguïté si <code class="class-name">ClasseA</code> et <code class="class-name">ClasseB</code> ont une méthode du même nom).</li>
+                        <li><strong class="text-blue-600">Héritage Multiple d'Interfaces :</strong> Une classe <strong class="italic">peut</strong> implémenter plusieurs interfaces (concept différent de l'héritage de classe, vu plus tard).</li>
+                        <li><strong class="text-blue-600">Hiérarchie d'héritage :</strong> L'héritage peut être multi-niveaux (Ex: <code class="class-name">Object</code> -> <code class="class-name">Employe</code> -> <code class="class-name">Manager</code> -> <code class="class-name">Directeur</code>).</li>
+                        <li><strong class="text-blue-600">Classe <code class="class-name">Object</code> :</strong> Toute classe qui n'étend pas explicitement une autre classe hérite implicitement de la classe <code class="class-name">java.lang.Object</code>. C'est la racine de toute la hiérarchie des classes en Java.</li>
+                     </ul>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-semibold" id="heritage-final">10.8 Empêcher l'Héritage (<code class="modifier">final</code> sur une classe)</h3>
+                    <p class="text-gray-700 mb-2">Si l'on veut interdire qu'une classe soit étendue (qu'elle devienne une classe mère), on peut la déclarer <code class="modifier">final</code>.</p>
+                    <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-2"><code class="language-java">
+<span class="comment">// La classe String est un exemple célèbre de classe final</span>
+<span class="modifier">public</span> <span class="modifier">final</span> <span class="keyword">class</span> <span class="class-name">String</span> {
+    <span class="comment">// ... son implémentation ...</span>
+}
+
+<span class="comment">// On peut aussi créer nos propres classes final</span>
+<span class="modifier">public</span> <span class="modifier">final</span> <span class="keyword">class</span> <span class="class-name">ConfigurationSysteme</span> {
+    <span class="comment">// Classe utilitaire ou sensible qu'on ne veut pas voir étendue</span>
+}
+                    </code></pre>
+                    <pre class="bg-red-100 text-red-800 p-3 rounded text-sm border border-red-300"><code class="language-java">
+<span class="comment">// Tentative d'hériter d'une classe final</span>
+<span class="comment">// public class MaStringSpeciale extends String { // ERREUR DE COMPILATION!</span>
+    <span class="comment">// Le compilateur indiquera:</span>
+    <span class="comment">// "cannot inherit from final java.lang.String"</span>
+<span class="comment">// }</span>
+                    </code></pre>
+                      <p class="text-gray-700 mt-3 mb-2">
+                        On utilise <code class="modifier">final</code> sur une classe pour des raisons de sécurité (garantir que le comportement ne sera pas altéré par une sous-classe) ou de conception (la classe n'est pas prévue pour être étendue).
+                      </p>
+                </div>
+            </article>
+
+            <article class="mb-6">
+                <h3 class="text-xl font-semibold" id="heritage-creation">10.9 Créer et Initialiser un Objet d'une Classe Fille</h3>
+                <p class="text-gray-700 mb-4">
+                    Lorsqu'on crée un objet d'une classe fille avec <code class="keyword">new</code>, Java doit allouer de la mémoire pour <strong class="italic">toutes</strong> les parties de l'objet (la partie spécifique et toutes les parties héritées de ses ancêtres) et surtout, il doit s'<strong class="text-red-600">assurer que toutes ces parties sont correctement initialisées</strong> via leurs constructeurs respectifs.
+                </p>
+                <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="comment">// Création d'un objet Developpeur</span>
+System.<span class="keyword">out</span>.println(<span class="string">"--> Début création dev1"</span>);
+<span class="class-name">Developpeur</span> dev1 = <span class="keyword">new</span> <span class="class-name">Developpeur</span>(<span class="string">"Alice"</span>, <span class="number">101</span>, <span class="number">60000</span>, <span class="keyword">new</span> <span class="type">String</span>[]{<span class="string">"Java"</span>, <span class="string">"Python"</span>});
+System.<span class="keyword">out</span>.println(<span class="string">"--> Fin création dev1"</span>);
+System.<span class="keyword">out</span>.println(dev1); <span class="comment">// Utilise le toString() redéfini de Developpeur</span>
+
+<span class="comment">// Création d'un objet Manager</span>
+System.<span class="keyword">out</span>.println(<span class="string">"
+--> Début création mgr1"</span>);
+<span class="class-name">Manager</span> mgr1 = <span class="keyword">new</span> <span class="class-name">Manager</span>(<span class="string">"Bob"</span>, <span class="number">202</span>, <span class="number">80000</span>, <span class="string">"Équipe Alpha"</span>);
+System.<span class="keyword">out</span>.println(<span class="string">"--> Fin création mgr1"</span>);
+System.<span class="keyword">out</span>.println(mgr1); <span class="comment">// Utilise le toString() redéfini de Manager</span>
+
+<span class="comment">// -------- Output Console --------</span>
+<span class="comment">// --> Début création dev1</span>
+<span class="comment">//    Constructeur Employe...       (Appelé par super() dans Developpeur)</span>
+<span class="comment">//    Constructeur Developpeur...</span>
+<span class="comment">// --> Fin création dev1</span>
+<span class="comment">// Developpeur[id=101, nom=Alice, salaire=60000.0] Langages:[Java, Python]</span>
+<span class="comment">//</span>
+<span class="comment">// --> Début création mgr1</span>
+<span class="comment">//    Constructeur Employe...       (Appelé par super() dans Manager)</span>
+<span class="comment">//    Constructeur Manager...</span>
+<span class="comment">// --> Fin création mgr1</span>
+<span class="comment">// Manager[id=202, nom=Bob, salaire=80000.0] Equipe:Équipe Alpha</span>
+                </code></pre>
+
+                <h4 class="text-lg font-semibold text-gray-800 mt-6 mb-2">Le Rôle Crucial de <code class="keyword">super()</code> dans les Constructeurs</h4>
+                <p class="text-gray-700 mb-4">
+                    Pour garantir cette initialisation correcte de la partie héritée, le constructeur de la classe fille a une <strong class="text-red-600">obligation</strong> : sa <strong class="text-red-600">toute première action</strong> doit être d'appeler un constructeur de sa classe mère directe.
+                </p>
+                 <p class="text-gray-700 mb-2">
+                    Cela se fait via le mot-clé <code class="keyword">super</code> utilisé comme un appel de méthode : <code class="keyword">super(...)</code>.
+                 </p>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm mb-4"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Developpeur</span> <span class="keyword">extends</span> <span class="class-name">Employe</span> {
+    <span class="modifier">private</span> <span class="type">String</span>[] langages;
+
+    <span class="modifier">public</span> <span class="method">Developpeur</span>(<span class="type">String</span> n, <span class="type">int</span> i, <span class="type">double</span> s, <span class="type">String</span>[] l) {
+        <span class="comment">// 1. APPEL EXPLICITE au constructeur Employe(String, int, double)</span>
+        <span class="comment">//    Doit être la PREMIÈRE ligne.</span>
+        <span class="keyword">super</span>(n, i, s);
+
+        <span class="comment">// 2. Initialisation de la partie spécifique à Developpeur</span>
+        <span class="comment">//    Seulement APRÈS l'appel à super().</span>
+        <span class="keyword">this</span>.langages = l;
+        System.<span class="keyword">out</span>.println(<span class="string">"Fin init Developpeur."</span>); <span class="comment">// OK ici</span>
+
+        <span class="comment">// super(n, i, s); // ERREUR de compilation si placé ici !</span>
+    }
+    <span class="comment">// ...</span>
+}
+                </code></pre>
+                 <p class="text-gray-700 mb-2">
+                    <strong class="text-blue-600">Appel Implicite :</strong> Si vous <strong class="italic">n'écrivez pas</strong> d'appel explicite à <code class="keyword">super(...)</code> dans un constructeur de classe fille, le compilateur Java insère <strong class="italic">automatiquement</strong> un appel au constructeur <strong class="text-red-600">sans argument</strong> de la classe mère : <code class="keyword">super();</code> comme toute première instruction.
+                </p>
+                 <p class="text-gray-700 mb-2">
+                     <strong class="text-red-600">Problème potentiel :</strong> Si la classe mère n'a <strong class="text-red-600">pas</strong> de constructeur sans argument (ou si celui-ci n'est pas accessible depuis la classe fille), et que vous oubliez d'appeler explicitement un autre constructeur de la mère via <code class="keyword">super(...)</code>, alors <strong class="text-red-600">le code ne compilera pas !</strong>
+                 </p>
+                  <pre class="bg-red-100 text-red-800 p-3 rounded text-sm border border-red-300 mb-4"><code class="language-java">
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Vehicule</span> {
+    <span class="modifier">protected</span> <span class="type">String</span> marque;
+    <span class="comment">// UN SEUL constructeur, qui prend un argument</span>
+    <span class="modifier">public</span> <span class="method">Vehicule</span>(<span class="type">String</span> marque) {
+        <span class="keyword">this</span>.marque = marque;
+    }
+    <span class="comment">// PAS de constructeur Vehicule() sans argument !</span>
+}
+
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Voiture</span> <span class="keyword">extends</span> <span class="class-name">Vehicule</span> {
+    <span class="modifier">private</span> <span class="type">int</span> nbPortes;
+
+    <span class="modifier">public</span> <span class="method">Voiture</span>(<span class="type">int</span> nbPortes) {
+        <span class="comment">// ERREUR DE COMPILATION ici !</span>
+        <span class="comment">// Le compilateur essaie d'insérer 'super();' implicitement,</span>
+        <span class="comment">// mais Vehicule n'a pas de constructeur sans argument.</span>
+        <span class="keyword">this</span>.nbPortes = nbPortes;
+    }
+
+    <span class="comment">// SOLUTION : Appeler explicitement le constructeur existant de Vehicule</span>
+     <span class="modifier">public</span> <span class="method">Voiture</span>(<span class="type">String</span> marque, <span class="type">int</span> nbPortes) {
+         <span class="keyword">super</span>(marque); <span class="comment">// OK : Appel explicite à Vehicule(String)</span>
+         <span class="keyword">this</span>.nbPortes = nbPortes;
+     }
+}
+                  </code></pre>
+                   <p class="text-gray-700 mt-2">
+                      C'est pourquoi il est souvent nécessaire d'ajouter un constructeur sans argument (même vide ou avec des valeurs par défaut) dans une classe mère si elle est destinée à être étendue, ou alors il faut s'assurer que toutes les classes filles appellent explicitement un des constructeurs existants via <code class="keyword">super(...)</code>.
+                   </p>
+
+                <h4 class="text-lg font-semibold text-gray-800 mt-6 mb-2">Choix du Constructeur Mère via la Signature</h4>
+
+                 <h4 class="text-lg font-semibold text-gray-800 mt-6 mb-2">L'Accès <code class="modifier">protected</code></h4>
+                <p class="text-gray-700 mb-2">Le modificateur <code class="modifier">protected</code> offre un accès intermédiaire.</p>
+                <p class="text-gray-700 mb-2">Un membre <code class="modifier">protected</code> d'une classe <code class="class-name">X</code> est accessible :</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1 bg-blue-50 p-3 rounded border border-blue-200 mb-4">
+                    <li>Depuis toute classe <strong class="text-blue-600">fille</strong> de <code class="class-name">X</code> (même dans un autre package).</li>
+                    <li>Depuis toute classe du <strong class="text-blue-600">même package</strong> que <code class="class-name">X</code>.</li>
+                    <li>Il est inaccessible dans les autres cas.</li>
+                </ul>
+                 <pre class="bg-gray-900 text-white p-3 rounded text-sm"><code class="language-java">
+<span class="comment">// Dans Animal (package zoo)</span>
+<span class="package">package</span> zoo;
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Animal</span> {
+    <span class="modifier">protected</span> <span class="type">float</span> poids; <span class="comment">// Maintenant protected</span>
+}
+
+<span class="comment">// Dans Mammifere (package zoo.mammals)</span>
+<span class="package">package</span> zoo.mammals;
+<span class="import">import</span> zoo.Animal;
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Mammifere</span> <span class="keyword">extends</span> <span class="class-name">Animal</span> {
+    <span class="modifier">public</span> <span class="type">void</span> <span class="method">afficherPoidsDirectement</span>() {
+        System.<span class="keyword">out</span>.println(<span class="keyword">this</span>.poids); <span class="comment">// OK! Classe fille</span>
+    }
+}
+
+<span class="comment">// Dans Veterinaire (package zoo)</span>
+<span class="package">package</span> zoo;
+<span class="modifier">public</span> <span class="keyword">class</span> <span class="class-name">Veterinaire</span> {
+    <span class="modifier">public</span> <span class="type">void</span> <span class="method">examiner</span>(<span class="class-name">Animal</span> a) {
+        System.<span class="keyword">out</span>.println(a.poids); <span class="comment">// OK! Même package</span>
+    }
+}
+                </code></pre>
+                <p class="text-gray-700 mt-4">
+                    <code class="modifier">protected</code> est un compromis entre encapsulation stricte (<code class="modifier">private</code>) et accès libre (<code class="modifier">public</code>). À utiliser quand une classe mère veut offrir un accès privilégié à ses descendantes directes ou aux classes "amies" du même package.
+                </p>
+            </article>
+        </section>
+
+        <a href="#top" class="back-to-top hidden md:inline-block">↑ Haut</a>
+
+        <footer class="border-t pt-6 mt-8 text-center text-gray-500 text-sm">
+            Cours de Programmation Orientée Objet Java - Concepts et Héritage (v1.1)
+        </footer>
+
+    </main>
+</div> <!-- Closing flex container -->
+
+</body>
+</html>
